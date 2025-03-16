@@ -111,21 +111,22 @@ export const SurveyResult: React.FC = () => {
     }
   };
 
-  const calculateScores = (): CategoryScore => {
-    const categoryTotals = {
+  const calculateScores = (answers: { [key: number]: string }) => {
+    const categoryTotals: { [key: string]: number } = {
       attention: 0,
       impulse: 0,
       execution: 0
     };
     
-    const categoryQuestions = {
+    const categoryQuestions: { [key: string]: number } = {
       attention: 0,
       impulse: 0,
       execution: 0
     };
 
     questions.forEach(question => {
-      if (answers[question.id]) {
+      // category와 scores가 있는 문항만 처리
+      if (question.category && question.scores && answers[question.id]) {
         const answerIndex = question.options.indexOf(answers[question.id]);
         const score = question.scores[answerIndex];
         
@@ -142,7 +143,7 @@ export const SurveyResult: React.FC = () => {
     };
   };
 
-  const scores = calculateScores();
+  const scores = calculateScores(answers);
   const attentionLevel = getScoreLevel(scores.attention, 'attention');
   const impulseLevel = getScoreLevel(scores.impulse, 'impulse');
   const executionLevel = getScoreLevel(scores.execution, 'execution');
