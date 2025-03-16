@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import {
   Chart as ChartJS,
@@ -12,7 +12,9 @@ import {
   ChartOptions
 } from 'chart.js';
 import { Radar } from 'react-chartjs-2';
+import { PDFDownloadLink, Document, Page, Text, View } from '@react-pdf/renderer';
 import { questions, Question } from './SurveyTest';
+import PDFDocument from '../components/PDFDocument';
 
 ChartJS.register(
   RadialLinearScale,
@@ -69,9 +71,28 @@ const getLevelColorClass = (level: '정상' | '경계선' | '주의요망'): str
   }
 };
 
+// PDF 문서 컴포넌트
+const MyDocument = ({ answers }: { answers: { [key: number]: string } }) => (
+  <Document>
+    <Page size="A4" style={{ padding: 20 }}>
+      <Text style={{ fontSize: 20, marginBottom: 20 }}>테스트 결과</Text>
+      {questions.map((question, index) => {
+        const answer = answers[question.id] || '미답변';
+        return (
+          <View key={question.id} style={{ marginBottom: 10 }}>
+            <Text>{index + 1}. {question.text}</Text>
+            <Text>답변: {answer}</Text>
+          </View>
+        );
+      })}
+    </Page>
+  </Document>
+);
+
 export const SurveyResult: React.FC = () => {
   const location = useLocation();
   const answers = (location.state as LocationState)?.answers || {};
+  const chartRef = useRef<any>(null);
 
   // 점수 수준 판단 함수
   const getScoreLevel = (score: number, category: keyof CategoryScore): ScoreLevel => {
@@ -173,14 +194,44 @@ export const SurveyResult: React.FC = () => {
     }
   };
 
+  // 차트를 이미지로 변환하는 함수
+  const getChartImage = (): string => {
+    if (chartRef.current) {
+      return chartRef.current.toBase64Image();
+    }
+    return '';
+  };
+
   return (
     <div className="max-w-4xl mx-auto p-6">
       <h1 className="text-3xl font-bold text-center mb-8 text-purple-700">테스트 결과</h1>
       
+      {/* PDF 다운로드 링크 */}
+      <div className="text-center mb-8">
+        <PDFDownloadLink
+          document={
+            <PDFDocument 
+              answers={answers}
+              scores={scores}
+              levels={{
+                attention: attentionLevel,
+                impulse: impulseLevel,
+                execution: executionLevel
+              }}
+              chartImage={getChartImage()}
+            />
+          }
+          fileName="adhd-test-result.pdf"
+          className="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700"
+        >
+          {({ loading }) => (loading ? '결과 생성 중...' : '결과 PDF 다운로드')}
+        </PDFDownloadLink>
+      </div>
+
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         <div className="bg-white p-6 rounded-lg shadow-lg border border-purple-100">
           <h2 className="text-xl font-semibold mb-4 text-purple-700">점수 분포</h2>
-          <Radar data={chartData} options={chartOptions} />
+          <Radar ref={chartRef} data={chartData} options={chartOptions} />
         </div>
 
         <div className="bg-white p-6 rounded-lg shadow-lg border border-purple-100">
