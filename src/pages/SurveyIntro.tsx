@@ -1,5 +1,4 @@
-import React from 'react';
-import { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 interface UserInfo {
@@ -15,14 +14,31 @@ export const SurveyIntro: React.FC = () => {
     gender: '',
     interests: []
   });
+  const [totalTests, setTotalTests] = useState<number>(0);
+
+  useEffect(() => {
+    // localStorage에서 총 검사 수를 가져옴
+    const savedTotal = localStorage.getItem('totalTests');
+    setTotalTests(savedTotal ? parseInt(savedTotal) : 0);
+  }, []);
 
   const handleStart = () => {
-    // 사용자 정보 저장 후 테스트 페이지로 이동
+    // 검사 시작 시 카운트 증가
+    const newTotal = totalTests + 1;
+    setTotalTests(newTotal);
+    localStorage.setItem('totalTests', newTotal.toString());
     navigate('/test');
   };
 
   return (
     <div className="max-w-2xl mx-auto p-6 space-y-8">
+      {/* 검사자 수 표시 */}
+      <div className="text-center mb-8">
+        <p className="text-lg text-purple-600 font-semibold">
+          지금까지 <span className="text-2xl text-purple-700">{totalTests}</span>명이 검사했습니다
+        </p>
+      </div>
+
       {/* 설문 개요 섹션 */}
       <section className="space-y-4">
         <h1 className="text-3xl font-bold text-gray-800">

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { ProgressBar } from '../components/ProgressBar';
 
 export interface Question {
   id: number;
@@ -122,13 +123,33 @@ export const questions: Question[] = [
 
 export const SurveyTest: React.FC = () => {
   const [answers, setAnswers] = useState<{[key: number]: string}>({});
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const navigate = useNavigate();
 
-  const handleAnswer = (questionId: number, answer: string) => {
+  const currentQuestion = questions[currentQuestionIndex];
+  const answeredCount = Object.keys(answers).length;
+
+  const handleAnswer = (answer: string) => {
     setAnswers(prev => ({
       ...prev,
-      [questionId]: answer
+      [currentQuestion.id]: answer
     }));
+    // 자동으로 다음 문항으로 이동
+    if (currentQuestionIndex < questions.length - 1) {
+      setCurrentQuestionIndex(prev => prev + 1);
+    }
+  };
+
+  const handlePrevious = () => {
+    if (currentQuestionIndex > 0) {
+      setCurrentQuestionIndex(prev => prev - 1);
+    }
+  };
+
+  const handleNext = () => {
+    if (currentQuestionIndex < questions.length - 1) {
+      setCurrentQuestionIndex(prev => prev + 1);
+    }
   };
 
   const handleSubmit = () => {
@@ -140,38 +161,79 @@ export const SurveyTest: React.FC = () => {
   };
 
   return (
-    <div className="max-w-2xl mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-6 text-purple-700">성향 테스트</h1>
-      
-      {questions.map((question) => (
-        <div key={question.id} className="mb-6 p-4 border border-purple-200 rounded-lg hover:border-purple-300 transition-colors">
-          <h2 className="font-semibold mb-3 text-purple-800">
-            {question.id}. {question.text}
-          </h2>
-          <div className="space-y-2">
-            {question.options.map((option, index) => (
-              <label key={index} className="block hover:bg-purple-50 p-2 rounded transition-colors">
-                <input
-                  type="radio"
-                  name={`question-${question.id}`}
-                  value={option}
-                  checked={answers[question.id] === option}
-                  onChange={() => handleAnswer(question.id, option)}
-                  className="mr-2 accent-purple-600"
-                />
-                {option}
-              </label>
-            ))}
+    <>
+      <ProgressBar current={answeredCount} total={questions.length} />
+      <div className="max-w-2xl mx-auto p-4 mt-16">
+        <div className="min-h-[60vh] flex flex-col">
+          {/* 현재 문항 */}
+          <div className="flex-grow">
+            <h2 className="text-xl font-semibold mb-6 text-purple-800">
+              {currentQuestionIndex + 1}. {currentQuestion.text}
+            </h2>
+            <div className="space-y-2">
+              {currentQuestion.options.map((option, index) => (
+                <button
+                  key={index}
+                  className={`w-full text-left p-4 rounded-lg transition-colors ${
+                    answers[currentQuestion.id] === option
+                      ? 'bg-purple-100 border-2 border-purple-500'
+                      : 'bg-white border border-gray-200 hover:border-purple-300'
+                  }`}
+                  onClick={() => handleAnswer(option)}
+                >
+                  {option}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* 네비게이션 버튼 */}
+          <div className="flex justify-between items-center mt-8">
+            <button
+              onClick={handlePrevious}
+              disabled={currentQuestionIndex === 0}
+              className={`px-6 py-2 rounded ${
+                currentQuestionIndex === 0
+                  ? 'bg-gray-300 cursor-not-allowed'
+                  : 'bg-purple-600 hover:bg-purple-700 text-white'
+              }`}
+            >
+              이전
+            </button>
+
+            {currentQuestionIndex === questions.length - 1 ? (
+              <button
+                onClick={handleSubmit}
+                disabled={Object.keys(answers).length !== questions.length}
+                className={`px-6 py-2 rounded ${
+                  Object.keys(answers).length === questions.length
+                    ? 'bg-purple-600 hover:bg-purple-700 text-white'
+                    : 'bg-gray-300 cursor-not-allowed'
+                }`}
+              >
+                제출하기
+              </button>
+            ) : (
+              <button
+                onClick={handleNext}
+                disabled={currentQuestionIndex === questions.length - 1}
+                className={`px-6 py-2 rounded ${
+                  currentQuestionIndex === questions.length - 1
+                    ? 'bg-gray-300 cursor-not-allowed'
+                    : 'bg-purple-600 hover:bg-purple-700 text-white'
+                }`}
+              >
+                다음
+              </button>
+            )}
+          </div>
+
+          {/* 진행 상태 표시 */}
+          <div className="text-center mt-4 text-sm text-gray-500">
+            {currentQuestionIndex + 1} / {questions.length} 문항
           </div>
         </div>
-      ))}
-
-      <button
-        onClick={handleSubmit}
-        className="w-full bg-purple-600 text-white py-2 px-4 rounded hover:bg-purple-700 transition-colors"
-      >
-        제출하기
-      </button>
-    </div>
+      </div>
+    </>
   );
 }; 
