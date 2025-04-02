@@ -9,6 +9,7 @@ import CorporateInquiryPage from './pages/CorporateInquiryPage';
 import ContactPage from './pages/ContactPage';
 import SelfCheckPage from './pages/SelfCheckPage';
 import PHQ9Test from './pages/tests/PHQ9Test';
+import GAD7Test from './pages/tests/GAD7Test';
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
           <Route path="/corporate-inquiry" element={<CorporateInquiryPage />} />
           <Route path="/self-check" element={<SelfCheckPage />} />
           <Route path="/test/phq9" element={<PHQ9Test />} />
+          <Route path="/test/gad7" element={<GAD7Test />} />
         </Routes>
       </div>
     </BrowserRouter>

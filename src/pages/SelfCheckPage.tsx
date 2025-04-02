@@ -30,7 +30,7 @@ const SelfCheckPage: React.FC = () => {
     },
     {
       id: 'anxiety',
-      title: '불안장애 자가검진',
+      title: '불안장애 자가검진 (GAD-7)',
       description: '불안 증상의 심각도를 평가하는 GAD-7 검사입니다.',
       icon: '😰',
       color: 'bg-yellow-100 text-yellow-600'
@@ -63,6 +63,8 @@ const SelfCheckPage: React.FC = () => {
       navigate('/intro');
     } else if (testId === 'depression') {
       navigate('/test/phq9');
+    } else if (testId === 'anxiety') {
+      navigate('/test/gad7');
     } else {
       alert('해당 검사는 준비 중입니다.');
     }
