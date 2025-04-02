@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import logo from './assets/logo.png';
 import { SurveyIntro } from './pages/SurveyIntro';
 import { SurveyTest } from './pages/SurveyTest';
 import { SurveyResult } from './pages/SurveyResult';
