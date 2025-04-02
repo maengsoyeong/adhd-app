@@ -7,6 +7,7 @@ import { SurveyResult } from './pages/SurveyResult';
 import EducationInquiryPage from './pages/EducationInquiryPage';
 import CorporateInquiryPage from './pages/CorporateInquiryPage';
 import ContactPage from './pages/ContactPage';
+import SelfCheckPage from './pages/SelfCheckPage';
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/education-inquiry" element={<EducationInquiryPage />} />
           <Route path="/corporate-inquiry" element={<CorporateInquiryPage />} />
+          <Route path="/self-check" element={<SelfCheckPage />} />
         </Routes>
       </div>
     </BrowserRouter>

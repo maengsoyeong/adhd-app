@@ -51,6 +51,13 @@ const NavBar: React.FC = () => {
                 >
                   ADHD 자가진단
                 </Link>
+                <Link 
+                  to="/self-check" 
+                  className="block px-4 py-2 text-gray-700 hover:bg-purple-100"
+                  onClick={() => setShowServices(false)}
+                >
+                  무료 자가검진
+                </Link>
               </div>
             )}
           </div>
