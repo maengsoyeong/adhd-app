@@ -53,22 +53,12 @@ const LandingPage: React.FC = () => {
 
       {/* 3D 오브젝트들 */}
       <div className="absolute top-0 left-0 w-full h-full pointer-events-none">
-        {/* 오렌지 삼각형 */}
+        {/* 오브젝트들 */}
         <div className="absolute top-[15%] left-[15%] w-32 h-32 bg-gradient-to-br from-orange-400 to-orange-500 rounded-lg transform rotate-45 animate-float-slow"></div>
-        
-        {/* 민트색 별 */}
         <div className="absolute top-[15%] right-[15%] w-32 h-32 bg-gradient-to-br from-teal-300 to-teal-400 rounded-[40%] transform rotate-[30deg] animate-float-medium"></div>
-        
-        {/* 보라색 원 */}
         <div className="absolute top-[40%] left-[10%] w-40 h-40 bg-gradient-to-br from-purple-400 to-purple-500 rounded-full animate-float"></div>
-        
-        {/* 파란색 실린더 */}
         <div className="absolute bottom-[20%] left-[20%] w-28 h-40 bg-gradient-to-br from-blue-400 to-blue-500 rounded-full animate-float-medium"></div>
-        
-        {/* 노란색 큐브 */}
         <div className="absolute bottom-[20%] right-[20%] w-32 h-32 bg-gradient-to-br from-yellow-300 to-yellow-400 rounded-lg transform rotate-12 animate-float-slow"></div>
-        
-        {/* 라임색 구 */}
         <div className="absolute top-[40%] right-[10%] w-36 h-36 bg-gradient-to-br from-lime-300 to-lime-400 rounded-lg transform rotate-45 animate-float"></div>
       </div>
     </div>
