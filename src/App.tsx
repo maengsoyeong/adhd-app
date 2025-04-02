@@ -10,6 +10,7 @@ import ContactPage from './pages/ContactPage';
 import SelfCheckPage from './pages/SelfCheckPage';
 import PHQ9Test from './pages/tests/PHQ9Test';
 import GAD7Test from './pages/tests/GAD7Test';
+import AboutPage from './pages/AboutPage';
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
       <div className="min-h-screen bg-gray-50">
         <Routes>
           <Route path="/" element={<LandingPage />} />
+          <Route path="/about" element={<AboutPage />} />
           <Route path="/intro" element={<SurveyIntro />} />
           <Route path="/test" element={<SurveyTest />} />
           <Route path="/result" element={<SurveyResult />} />
