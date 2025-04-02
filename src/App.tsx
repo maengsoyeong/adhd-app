@@ -4,6 +4,9 @@ import LandingPage from './pages/LandingPage';
 import { SurveyIntro } from './pages/SurveyIntro';
 import { SurveyTest } from './pages/SurveyTest';
 import { SurveyResult } from './pages/SurveyResult';
+import EducationInquiryPage from './pages/EducationInquiryPage';
+import CorporateInquiryPage from './pages/CorporateInquiryPage';
+import ContactPage from './pages/ContactPage';
 
 function App() {
   return (
@@ -14,6 +17,9 @@ function App() {
           <Route path="/intro" element={<SurveyIntro />} />
           <Route path="/test" element={<SurveyTest />} />
           <Route path="/result" element={<SurveyResult />} />
+          <Route path="/contact" element={<ContactPage />} />
+          <Route path="/education-inquiry" element={<EducationInquiryPage />} />
+          <Route path="/corporate-inquiry" element={<CorporateInquiryPage />} />
         </Routes>
       </div>
     </BrowserRouter>

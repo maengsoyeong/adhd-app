@@ -1,23 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import NavBar from '../components/NavBar';
 
 const LandingPage: React.FC = () => {
   return (
     <div className="min-h-screen bg-white overflow-hidden relative">
       {/* 네비게이션 바 */}
-      <nav className="flex justify-center items-center p-4">
-        <div className="max-w-6xl w-full flex justify-between items-center">
-          <div className="text-2xl font-bold text-purple-600">퍼즐핏</div>
-          <div className="flex space-x-6">
-            <button className="px-4 py-2 bg-orange-500 text-white rounded-full font-medium">Home</button>
-            <button className="px-4 py-2 text-gray-700 hover:text-gray-900">About</button>
-            <button className="px-4 py-2 text-gray-700 hover:text-gray-900">Services</button>
-            <button className="px-4 py-2 text-gray-700 hover:text-gray-900">Information</button>
-            <button className="px-4 py-2 text-gray-700 hover:text-gray-900">Community</button>
-            <button className="px-4 py-2 text-gray-700 hover:text-gray-900">Contact</button>
-          </div>
-        </div>
-      </nav>
+      <NavBar />
 
       {/* 메인 컨텐츠 */}
       <div className="max-w-6xl mx-auto px-4 py-16 flex flex-col items-center justify-center relative z-10">
