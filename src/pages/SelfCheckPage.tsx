@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import NavBar from '../components/NavBar';
 
 interface TestOption {
@@ -10,7 +11,7 @@ interface TestOption {
 }
 
 const SelfCheckPage: React.FC = () => {
-  const [selectedTest, setSelectedTest] = useState<string | null>(null);
+  const navigate = useNavigate();
   
   const testOptions: TestOption[] = [
     {
@@ -22,7 +23,7 @@ const SelfCheckPage: React.FC = () => {
     },
     {
       id: 'depression',
-      title: '우울증 자가검진',
+      title: '우울증 자가검진 (PHQ-9)',
       description: '우울 증상의 심각도를 평가하는 PHQ-9 검사입니다.',
       icon: '😔',
       color: 'bg-blue-100 text-blue-600'
@@ -58,12 +59,10 @@ const SelfCheckPage: React.FC = () => {
   ];
   
   const handleTestSelect = (testId: string) => {
-    setSelectedTest(testId);
-    // 실제 구현에서는 여기서 해당 테스트 페이지로 이동하거나 테스트 컴포넌트를 렌더링
-    
-    // 예시: 테스트 페이지로 이동
     if (testId === 'adhd') {
-      window.location.href = '/intro';
+      navigate('/intro');
+    } else if (testId === 'depression') {
+      navigate('/test/phq9');
     } else {
       alert('해당 검사는 준비 중입니다.');
     }
