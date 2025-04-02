@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import NavBar from '../../components/NavBar';
 import jsPDF from 'jspdf';
@@ -37,10 +37,23 @@ const PHQ9Test: React.FC = () => {
     { value: 3, label: '거의 매일 그렇다' }
   ];
   
+  // 답변 선택 시 자동으로 다음 문항으로 이동
   const handleAnswerSelect = (questionIndex: number, value: number) => {
     const newAnswers = [...answers];
     newAnswers[questionIndex] = value;
     setAnswers(newAnswers);
+    
+    // 마지막 문항이 아니면 자동으로 다음 문항으로 이동
+    if (questionIndex < questions.length - 1) {
+      setTimeout(() => {
+        setCurrentStep(questionIndex + 1);
+      }, 500); // 0.5초 후 다음 문항으로 이동 (사용자가 선택을 확인할 시간을 줌)
+    } else if (questionIndex === questions.length - 1) {
+      // 마지막 문항이면 2초 후 결과 페이지로 이동
+      setTimeout(() => {
+        setShowResult(true);
+      }, 1000);
+    }
   };
   
   const handleNext = () => {
@@ -95,55 +108,58 @@ const PHQ9Test: React.FC = () => {
     }
   };
   
+  // PDF 생성 및 다운로드 함수
   const generatePDF = () => {
     const score = calculateScore();
     const result = getResultInterpretation(score);
-    
     const doc = new jsPDF();
     
-    // 제목
+    // 제목 추가
     doc.setFontSize(20);
-    doc.text('PHQ-9 우울증 검사 결과', 105, 20, { align: 'center' });
+    doc.text('PHQ-9 우울증 자가검진 결과', 105, 20, { align: 'center' });
     
-    // 개인 정보
+    // 로고 추가 (이미지 URL이 있는 경우)
+    // doc.addImage('로고_이미지_URL', 'PNG', 10, 10, 30, 30);
+    
+    // 검사 정보
     doc.setFontSize(12);
-    doc.text(`이름: ${userName || '미입력'}`, 20, 40);
-    doc.text(`나이: ${userAge || '미입력'}`, 20, 50);
-    doc.text(`성별: ${userGender || '미입력'}`, 20, 60);
-    doc.text(`검사 일자: ${new Date().toLocaleDateString()}`, 20, 70);
+    doc.text(`검사일: ${new Date().toLocaleDateString()}`, 20, 40);
     
-    // 점수 및 해석
+    if (userName) doc.text(`이름: ${userName}`, 20, 50);
+    if (userAge) doc.text(`나이: ${userAge}세`, 20, 60);
+    if (userGender) doc.text(`성별: ${userGender}`, 20, 70);
+    
+    // 결과 요약
     doc.setFontSize(16);
-    doc.text('검사 결과', 105, 90, { align: 'center' });
+    doc.text('검사 결과 요약', 20, 90);
     
     doc.setFontSize(14);
-    doc.text(`총점: ${score}점 / 27점`, 105, 105, { align: 'center' });
-    doc.text(`우울 수준: ${result.level}`, 105, 115, { align: 'center' });
+    doc.text(`총점: ${score}/27`, 20, 100);
+    doc.text(`우울 수준: ${result.level}`, 20, 110);
     
-    // 결과 해석
+    // 결과 설명
     doc.setFontSize(12);
     const splitDescription = doc.splitTextToSize(result.description, 170);
-    doc.text(splitDescription, 105, 130, { align: 'center' });
+    doc.text(splitDescription, 20, 120);
     
-    // 문항별 응답
+    // 문항별 응답 테이블
     doc.setFontSize(14);
-    doc.text('문항별 응답', 105, 150, { align: 'center' });
+    doc.text('문항별 응답', 20, 140);
     
-    const tableColumn = ["문항", "응답"];
-    const tableRows: any[] = [];
-    
-    questions.forEach((question, index) => {
-      const answerText = answers[index] >= 0 ? options[answers[index]].label : '응답 없음';
-      tableRows.push([`${index + 1}. ${question.text.substring(0, 40)}...`, answerText]);
-    });
+    const tableData = questions.map((question, index) => [
+      index + 1,
+      question.text,
+      answers[index] >= 0 ? options[answers[index]].label : '응답 없음',
+      answers[index] >= 0 ? answers[index].toString() : '-'
+    ]);
     
     (doc as any).autoTable({
-      head: [tableColumn],
-      body: tableRows,
-      startY: 160,
-      theme: 'grid',
-      headStyles: { fillColor: [100, 50, 150] },
-      margin: { top: 160 }
+      startY: 150,
+      head: [['번호', '문항', '응답', '점수']],
+      body: tableData,
+      theme: 'striped',
+      headStyles: { fillColor: [100, 100, 255] },
+      margin: { top: 150 }
     });
     
     // 주의사항
@@ -151,13 +167,24 @@ const PHQ9Test: React.FC = () => {
     doc.setPage(pageCount);
     const finalY = (doc as any).lastAutoTable.finalY + 10;
     
+    doc.setFontSize(12);
+    doc.text('주의사항:', 20, finalY);
     doc.setFontSize(10);
-    doc.setTextColor(100);
-    doc.text('※ 주의사항: 이 결과는 참고용으로만 활용하시고, 정확한 진단을 위해서는 반드시 전문가와 상담하시기 바랍니다.', 105, finalY, { align: 'center' });
+    const cautionText = '이 검사 결과는 참고용으로만 활용하시고, 정확한 진단과 치료를 위해서는 반드시 전문가와 상담하시기 바랍니다. 심각한 증상이 있거나 자해/자살 생각이 있는 경우 즉시 전문가의 도움을 받으세요.';
+    const splitCaution = doc.splitTextToSize(cautionText, 170);
+    doc.text(splitCaution, 20, finalY + 10);
     
-    // PDF 저장
-    doc.save('PHQ9_검사결과.pdf');
+    // 바닥글
+    const pageHeight = doc.internal.pageSize.height;
+    doc.setFontSize(10);
+    doc.text('© 퍼즐핏 - PHQ-9 우울증 자가검진', 105, pageHeight - 10, { align: 'center' });
+    
+    // PDF 다운로드
+    doc.save('PHQ-9_우울증_자가검진_결과.pdf');
   };
+  
+  // 진행 상태 표시 바
+  const progressPercentage = ((currentStep + 1) / questions.length) * 100;
   
   return (
     <div className="min-h-screen bg-gray-50">
@@ -165,48 +192,71 @@ const PHQ9Test: React.FC = () => {
       
       <div className="max-w-3xl mx-auto px-4 py-12">
         {!showResult ? (
-          <>
+          <div className="bg-white rounded-lg shadow-sm p-6">
+            <h1 className="text-2xl font-bold text-gray-800 mb-6 text-center">PHQ-9 우울증 자가검진</h1>
+            
+            {/* 진행 상태 표시 */}
             <div className="mb-8">
-              <h1 className="text-2xl font-bold text-gray-800 mb-2">PHQ-9 우울증 선별 검사</h1>
-              <p className="text-gray-600">
-                지난 2주 동안 당신이 겪은 증상에 대해 가장 적절한 답변을 선택해주세요.
-              </p>
-              
-              <div className="w-full bg-gray-200 h-2 mt-6 rounded-full">
-                <div 
-                  className="bg-purple-600 h-2 rounded-full transition-all duration-300"
-                  style={{ width: `${((currentStep + 1) / questions.length) * 100}%` }}
-                ></div>
+              <div className="flex justify-between text-sm text-gray-600 mb-1">
+                <span>문항 {currentStep + 1} / {questions.length}</span>
+                <span>{Math.round(progressPercentage)}% 완료</span>
               </div>
-              <div className="text-right text-sm text-purple-600 mt-1">
-                {currentStep + 1} / {questions.length}
+              <div className="w-full bg-gray-200 h-2 rounded-full">
+                <div 
+                  className="bg-blue-500 h-2 rounded-full transition-all duration-300"
+                  style={{ width: `${progressPercentage}%` }}
+                ></div>
               </div>
             </div>
             
-            <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
+            {/* 문항 네비게이션 */}
+            <div className="flex justify-center mb-6 overflow-x-auto py-2">
+              <div className="flex space-x-2">
+                {questions.map((_, index) => (
+                  <button
+                    key={index}
+                    onClick={() => setCurrentStep(index)}
+                    className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium transition-colors
+                      ${currentStep === index 
+                        ? 'bg-blue-600 text-white' 
+                        : answers[index] >= 0 
+                          ? 'bg-green-100 text-green-800 border border-green-300' 
+                          : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                      }`}
+                  >
+                    {index + 1}
+                  </button>
+                ))}
+              </div>
+            </div>
+            
+            <div className="mb-8">
               <h2 className="text-xl font-semibold text-gray-800 mb-4">
                 {questions[currentStep].text}
               </h2>
               
-              <div className="space-y-3 mt-6">
+              <div className="space-y-3">
                 {options.map((option) => (
                   <div 
                     key={option.value}
-                    className={`p-4 border rounded-lg cursor-pointer transition-colors ${
-                      answers[currentStep] === option.value 
-                        ? 'border-purple-500 bg-purple-50' 
-                        : 'border-gray-200 hover:border-purple-300'
-                    }`}
                     onClick={() => handleAnswerSelect(currentStep, option.value)}
+                    className={`p-4 border rounded-lg cursor-pointer transition-all
+                      ${answers[currentStep] === option.value 
+                        ? 'border-blue-500 bg-blue-50' 
+                        : 'border-gray-200 hover:border-blue-300 hover:bg-blue-50'
+                      }`}
                   >
                     <div className="flex items-center">
-                      <div className={`w-5 h-5 rounded-full border flex items-center justify-center mr-3 ${
-                        answers[currentStep] === option.value 
-                          ? 'border-purple-500' 
-                          : 'border-gray-400'
-                      }`}>
+                      <div className={`w-5 h-5 rounded-full border flex items-center justify-center mr-3
+                        ${answers[currentStep] === option.value 
+                          ? 'border-blue-500 bg-blue-500' 
+                          : 'border-gray-300'
+                        }`}
+                      >
                         {answers[currentStep] === option.value && (
-                          <div className="w-3 h-3 rounded-full bg-purple-500"></div>
+                          <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
+                            <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                          </svg>
                         )}
                       </div>
                       <span className="text-gray-800">{option.label}</span>
@@ -220,9 +270,9 @@ const PHQ9Test: React.FC = () => {
               <button
                 onClick={handlePrev}
                 disabled={currentStep === 0}
-                className={`px-6 py-2 rounded-lg ${
+                className={`px-4 py-2 rounded-lg ${
                   currentStep === 0 
-                    ? 'bg-gray-200 text-gray-500 cursor-not-allowed' 
+                    ? 'bg-gray-100 text-gray-400 cursor-not-allowed' 
                     : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
                 }`}
               >
@@ -231,58 +281,61 @@ const PHQ9Test: React.FC = () => {
               
               <button
                 onClick={handleNext}
-                disabled={answers[currentStep] === -1}
-                className={`px-6 py-2 rounded-lg ${
-                  answers[currentStep] === -1 
-                    ? 'bg-purple-300 text-white cursor-not-allowed' 
-                    : 'bg-purple-600 text-white hover:bg-purple-700'
+                disabled={answers[currentStep] < 0}
+                className={`px-4 py-2 rounded-lg ${
+                  answers[currentStep] < 0 
+                    ? 'bg-blue-300 text-white cursor-not-allowed' 
+                    : 'bg-blue-600 text-white hover:bg-blue-700'
                 }`}
               >
                 {currentStep === questions.length - 1 ? '결과 보기' : '다음'}
               </button>
             </div>
-          </>
+          </div>
         ) : (
-          <div className="bg-white rounded-lg shadow-sm p-8">
-            <h1 className="text-2xl font-bold text-gray-800 mb-6 text-center">PHQ-9 검사 결과</h1>
+          <div className="bg-white rounded-lg shadow-sm p-6">
+            <h1 className="text-2xl font-bold text-gray-800 mb-6 text-center">PHQ-9 우울증 자가검진 결과</h1>
             
             <div className="mb-8">
-              <p className="text-gray-600 mb-4">
-                결과를 PDF로 저장하기 위해 아래 정보를 입력해주세요. (선택사항)
+              <p className="text-gray-600 text-center mb-6">
+                검사에 응답해주셔서 감사합니다. 아래는 귀하의 PHQ-9 검사 결과입니다.
+                결과를 PDF로 저장하시려면 아래 정보를 입력해주세요. (선택사항)
               </p>
               
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="grid md:grid-cols-3 gap-4 mb-6">
                 <div>
-                  <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">이름</label>
+                  <label htmlFor="userName" className="block text-sm font-medium text-gray-700 mb-1">이름 (선택)</label>
                   <input
                     type="text"
-                    id="name"
+                    id="userName"
                     value={userName}
                     onChange={(e) => setUserName(e.target.value)}
-                    className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
-                    placeholder="이름 입력"
+                    className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="이름"
                   />
                 </div>
                 
                 <div>
-                  <label htmlFor="age" className="block text-sm font-medium text-gray-700 mb-1">나이</label>
+                  <label htmlFor="userAge" className="block text-sm font-medium text-gray-700 mb-1">나이 (선택)</label>
                   <input
                     type="number"
-                    id="age"
+                    id="userAge"
                     value={userAge}
                     onChange={(e) => setUserAge(e.target.value)}
-                    className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
-                    placeholder="나이 입력"
+                    className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="나이"
+                    min="0"
+                    max="120"
                   />
                 </div>
                 
                 <div>
-                  <label htmlFor="gender" className="block text-sm font-medium text-gray-700 mb-1">성별</label>
+                  <label htmlFor="userGender" className="block text-sm font-medium text-gray-700 mb-1">성별 (선택)</label>
                   <select
-                    id="gender"
+                    id="userGender"
                     value={userGender}
                     onChange={(e) => setUserGender(e.target.value)}
-                    className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                    className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                   >
                     <option value="">선택</option>
                     <option value="남성">남성</option>
