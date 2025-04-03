@@ -1,192 +1,194 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, Fragment } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Disclosure, Menu } from '@headlessui/react';
-import { ChevronUpIcon } from '@heroicons/react/20/solid';
+import { Disclosure, Menu, Transition } from '@headlessui/react';
+import { ChevronDownIcon, Bars3Icon as MenuIcon, XMarkIcon as XIcon } from '@heroicons/react/24/outline';
+import Logo from './Logo';
 
 const NavBar: React.FC = () => {
+  const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
 
+  // 스크롤 감지 최적화
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrolled = window.scrollY > 10;
+      if (isScrolled !== scrolled) {
+        setIsScrolled(scrolled);
+      }
+    };
+    
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [isScrolled]);
+
   // 페이지 이동 시 모바일 메뉴 닫기
-  React.useEffect(() => {
+  useEffect(() => {
     setIsMobileMenuOpen(false);
   }, [location]);
 
   const toggleMobileMenu = () => setIsMobileMenuOpen(!isMobileMenuOpen);
 
+  // 네비게이션 링크 정의 - 이미지에 맞게 수정
+  const navLinks = [
+    { name: 'Home', href: '/' },
+    { name: 'About', href: '/about' },
+    {
+      name: 'Services',
+      href: '#',
+      children: [
+        { name: 'ADHD 자가진단', href: '/tests/intro' },
+        { name: '무료 자가검진', href: '/tests/self-check' },
+        { name: '우울증 검사(PHQ-9)', href: '/tests/specific/phq9' },
+        { name: '불안장애 검사(GAD-7)', href: '/tests/specific/gad7' },
+      ],
+    },
+    { name: 'Information', href: '/information' },
+    { name: 'Community', href: '/community' },
+    { name: 'Contact', href: '/contact' },
+  ];
+
   return (
-    <nav className="bg-white shadow-sm sticky top-0 z-50">
+    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+      isScrolled ? 'bg-white shadow-sm py-2' : 'bg-white py-4'
+    }`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between h-16">
-          {/* 로고 */}
-          <div className="flex-shrink-0 flex items-center">
-            <Link to="/" className="text-2xl font-bold text-primary-600">
-              퍼즐핏
+        <div className="flex justify-between items-center">
+          {/* 로고 - 이미지에 맞게 수정 */}
+          <div className="flex-shrink-0">
+            <Link to="/" className="flex items-center">
+              <span className="text-3xl font-bold text-purple-600">퍼즐핏</span>
             </Link>
           </div>
 
-          {/* 데스크탑 메뉴 */}
-          <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
-            <Link 
-              to="/about" 
-              className={`inline-flex items-center px-1 pt-1 border-b-2 ${
-                location.pathname === '/about' 
-                  ? 'border-primary-500 text-gray-900' 
-                  : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'
-              } text-sm font-medium`}
-            >
-              회사소개
-            </Link>
-            
-            {/* 서비스 드롭다운 */}
-            <Menu as="div" className="relative">
-              <Menu.Button className="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700 focus:outline-none">
-                <span>서비스</span>
-                <svg className="ml-1 h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                  <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
-                </svg>
-              </Menu.Button>
-              <Menu.Items className="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
-                <div className="py-1">
-                  <Menu.Item>
-                    {({ active }) => (
-                      <Link to="/tests/intro" className={`block px-4 py-2 text-sm ${active ? 'bg-gray-100 text-gray-900' : 'text-gray-700'}`}>
-                        ADHD 자가진단
-                      </Link>
-                    )}
-                  </Menu.Item>
-                  <Menu.Item>
-                    {({ active }) => (
-                      <Link to="/tests/self-check" className={`block px-4 py-2 text-sm ${active ? 'bg-gray-100 text-gray-900' : 'text-gray-700'}`}>
-                        무료 자가검진
-                      </Link>
-                    )}
-                  </Menu.Item>
-                  <Menu.Item>
-                    {({ active }) => (
-                      <Link to="/tests/specific/phq9" className={`block px-4 py-2 text-sm ${active ? 'bg-gray-100 text-gray-900' : 'text-gray-700'}`}>
-                        우울증 검사(PHQ-9)
-                      </Link>
-                    )}
-                  </Menu.Item>
-                  <Menu.Item>
-                    {({ active }) => (
-                      <Link to="/tests/specific/gad7" className={`block px-4 py-2 text-sm ${active ? 'bg-gray-100 text-gray-900' : 'text-gray-700'}`}>
-                        불안장애 검사(GAD-7)
-                      </Link>
-                    )}
-                  </Menu.Item>
-                </div>
-              </Menu.Items>
-            </Menu>
-
-            {/* 문의 드롭다운 */}
-            <Menu as="div" className="relative">
-              <Menu.Button className="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700 focus:outline-none">
-                <span>문의하기</span>
-                <svg className="ml-1 h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                  <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
-                </svg>
-              </Menu.Button>
-              <Menu.Items className="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
-                <div className="py-1">
-                  <Menu.Item>
-                    {({ active }) => (
-                      <Link to="/contact" className={`block px-4 py-2 text-sm ${active ? 'bg-gray-100 text-gray-900' : 'text-gray-700'}`}>
-                        문의하기
-                      </Link>
-                    )}
-                  </Menu.Item>
-                  <Menu.Item>
-                    {({ active }) => (
-                      <Link to="/education-inquiry" className={`block px-4 py-2 text-sm ${active ? 'bg-gray-100 text-gray-900' : 'text-gray-700'}`}>
-                        교육 문의
-                      </Link>
-                    )}
-                  </Menu.Item>
-                  <Menu.Item>
-                    {({ active }) => (
-                      <Link to="/corporate-inquiry" className={`block px-4 py-2 text-sm ${active ? 'bg-gray-100 text-gray-900' : 'text-gray-700'}`}>
-                        기업 문의
-                      </Link>
-                    )}
-                  </Menu.Item>
-                </div>
-              </Menu.Items>
-            </Menu>
+          {/* 데스크탑 메뉴 - 이미지에 맞게 수정 */}
+          <div className="hidden md:flex md:items-center md:space-x-12">
+            {navLinks.map((link) => 
+              !link.children ? (
+                <Link
+                  key={link.name}
+                  to={link.href}
+                  className={`relative px-1 py-2 font-medium text-base transition-colors duration-200 ${
+                    location.pathname === link.href
+                      ? 'text-gray-900 font-semibold'
+                      : 'text-gray-600 hover:text-gray-900'
+                  }`}
+                >
+                  {link.name}
+                </Link>
+              ) : (
+                <Menu as="div" key={link.name} className="relative">
+                  {({ open }) => (
+                    <>
+                      <Menu.Button 
+                        className="group inline-flex items-center px-1 py-2 font-medium text-base text-gray-600 hover:text-gray-900"
+                      >
+                        {link.name}
+                        <ChevronDownIcon 
+                          className={`ml-1 h-4 w-4 transition-transform duration-200 ${
+                            open ? 'rotate-180' : ''
+                          } text-gray-500`}
+                        />
+                      </Menu.Button>
+                      <Transition
+                        as={Fragment}
+                        enter="transition ease-out duration-100"
+                        enterFrom="transform opacity-0 scale-95"
+                        enterTo="transform opacity-100 scale-100"
+                        leave="transition ease-in duration-75"
+                        leaveFrom="transform opacity-100 scale-100"
+                        leaveTo="transform opacity-0 scale-95"
+                      >
+                        <Menu.Items className="absolute right-0 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                          <div className="py-1">
+                            {link.children.map((child) => (
+                              <Menu.Item key={child.name}>
+                                {({ active }) => (
+                                  <Link
+                                    to={child.href}
+                                    className={`${
+                                      active ? 'bg-gray-100 text-gray-900' : 'text-gray-700'
+                                    } block px-4 py-2 text-sm`}
+                                  >
+                                    {child.name}
+                                  </Link>
+                                )}
+                              </Menu.Item>
+                            ))}
+                          </div>
+                        </Menu.Items>
+                      </Transition>
+                    </>
+                  )}
+                </Menu>
+              )
+            )}
           </div>
 
           {/* 모바일 메뉴 버튼 */}
-          <div className="-mr-2 flex items-center sm:hidden">
-            <button 
-              onClick={toggleMobileMenu} 
-              type="button" 
-              className="bg-white inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary-500" 
-              aria-controls="mobile-menu" 
-              aria-expanded="false"
+          <div className="md:hidden">
+            <button
+              onClick={toggleMobileMenu}
+              className="p-2 rounded-md text-gray-600 hover:text-gray-900 hover:bg-gray-100"
             >
-              <span className="sr-only">메뉴 열기</span>
-              {/* 메뉴 닫힘 아이콘 */}
-              <svg className={`${isMobileMenuOpen ? 'hidden' : 'block'} h-6 w-6`} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
-              </svg>
-              {/* 메뉴 열림 아이콘 */}
-              <svg className={`${isMobileMenuOpen ? 'block' : 'hidden'} h-6 w-6`} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
-              </svg>
+              {isMobileMenuOpen ? (
+                <XIcon className="h-6 w-6" />
+              ) : (
+                <MenuIcon className="h-6 w-6" />
+              )}
             </button>
           </div>
         </div>
       </div>
 
       {/* 모바일 메뉴 */}
-      <div className={`${isMobileMenuOpen ? 'block' : 'hidden'} sm:hidden`} id="mobile-menu">
-        <div className="pt-2 pb-3 space-y-1">
-          <Link 
-            to="/about" 
-            className={`block pl-3 pr-4 py-2 border-l-4 ${
-              location.pathname === '/about' 
-                ? 'border-primary-500 text-primary-700 bg-primary-50' 
-                : 'border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800'
-            } text-base font-medium`}
-          >
-            회사소개
-          </Link>
-          
-          {/* 모바일 서비스 링크들 */}
-          <Disclosure> 
-            {({ open }) => (
-              <>
-                <Disclosure.Button className="w-full flex justify-between items-center pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800">
-                  <span>서비스</span>
-                  <ChevronUpIcon className={`${open ? 'transform rotate-180' : ''} w-5 h-5 text-gray-500`} />
-                </Disclosure.Button>
-                <Disclosure.Panel className="pl-8 pr-4 py-2 space-y-1">
-                  <Link to="/tests/intro" className="block text-sm text-gray-600 hover:bg-gray-50 hover:text-gray-800">ADHD 자가진단</Link>
-                  <Link to="/tests/self-check" className="block text-sm text-gray-600 hover:bg-gray-50 hover:text-gray-800">무료 자가검진</Link>
-                  <Link to="/tests/specific/phq9" className="block text-sm text-gray-600 hover:bg-gray-50 hover:text-gray-800">우울증 검사(PHQ-9)</Link>
-                  <Link to="/tests/specific/gad7" className="block text-sm text-gray-600 hover:bg-gray-50 hover:text-gray-800">불안장애 검사(GAD-7)</Link>
-                </Disclosure.Panel>
-              </>
-            )}
-          </Disclosure>
-          
-          {/* 모바일 문의 링크들 */}
-          <Disclosure>
-            {({ open }) => (
-              <>
-                <Disclosure.Button className="w-full flex justify-between items-center pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800">
-                  <span>문의하기</span>
-                  <ChevronUpIcon className={`${open ? 'transform rotate-180' : ''} w-5 h-5 text-gray-500`} />
-                </Disclosure.Button>
-                <Disclosure.Panel className="pl-8 pr-4 py-2 space-y-1">
-                  <Link to="/contact" className="block text-sm text-gray-600 hover:bg-gray-50 hover:text-gray-800">문의하기</Link>
-                  <Link to="/education-inquiry" className="block text-sm text-gray-600 hover:bg-gray-50 hover:text-gray-800">교육 문의</Link>
-                  <Link to="/corporate-inquiry" className="block text-sm text-gray-600 hover:bg-gray-50 hover:text-gray-800">기업 문의</Link>
-                </Disclosure.Panel>
-              </>
-            )}
-          </Disclosure>
+      <div 
+        className={`md:hidden transition-all duration-300 ease-in-out overflow-hidden bg-white shadow-lg ${
+          isMobileMenuOpen ? 'max-h-[500px]' : 'max-h-0'
+        }`}
+      >
+        <div className="px-2 pt-2 pb-3 space-y-1">
+          {navLinks.map((link) => 
+            !link.children ? (
+              <Link
+                key={link.name}
+                to={link.href}
+                className={`block px-3 py-2 rounded-md text-base font-medium ${
+                  location.pathname === link.href
+                    ? 'bg-gray-100 text-gray-900'
+                    : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900'
+                }`}
+              >
+                {link.name}
+              </Link>
+            ) : (
+              <Disclosure key={link.name}>
+                {({ open }) => (
+                  <>
+                    <Disclosure.Button className="flex justify-between w-full px-3 py-2 text-base font-medium text-gray-700 rounded-md hover:bg-gray-100 hover:text-gray-900">
+                      <span>{link.name}</span>
+                      <ChevronDownIcon
+                        className={`${
+                          open ? 'transform rotate-180' : ''
+                        } w-5 h-5 text-gray-500`}
+                      />
+                    </Disclosure.Button>
+                    <Disclosure.Panel className="px-4 pt-2 pb-2 space-y-1">
+                      {link.children.map((child) => (
+                        <Link
+                          key={child.name}
+                          to={child.href}
+                          className="block pl-3 pr-4 py-2 text-sm text-gray-600 hover:bg-gray-100 hover:text-gray-900 rounded-md"
+                        >
+                          {child.name}
+                        </Link>
+                      ))}
+                    </Disclosure.Panel>
+                  </>
+                )}
+              </Disclosure>
+            )
+          )}
         </div>
       </div>
     </nav>
