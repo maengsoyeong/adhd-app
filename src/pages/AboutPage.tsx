@@ -1,6 +1,10 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 
+// 이미지 임포트 제거
+// import defaultFounderImage from '../assets/default-founder.png';
+// import defaultExpertImage from '../assets/default-expert.png';
+
 const AboutPage: React.FC = () => {
   return (
     <div className="min-h-screen">
@@ -111,7 +115,9 @@ const AboutPage: React.FC = () => {
                         className="w-full h-full object-cover"
                         onError={(e) => {
                           const target = e.target as HTMLImageElement;
-                          target.src = 'https://via.placeholder.com/300?text=Founder';
+                          // 색상 블록으로 대체
+                          target.style.display = 'none';
+                          target.parentElement!.style.backgroundColor = '#9061F9';
                         }}
                       />
                     </div>
@@ -145,7 +151,9 @@ const AboutPage: React.FC = () => {
                         className="w-full h-full object-cover"
                         onError={(e) => {
                           const target = e.target as HTMLImageElement;
-                          target.src = 'https://via.placeholder.com/300?text=Expert';
+                          // 색상 블록으로 대체
+                          target.style.display = 'none';
+                          target.parentElement!.style.backgroundColor = '#9061F9';
                         }}
                       />
                     </div>
