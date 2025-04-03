@@ -10,7 +10,7 @@ interface TestOption {
   color: string;
 }
 
-const SelfCheckPage: React.FC = () => {
+export const SelfCheckPage: React.FC = () => {
   const navigate = useNavigate();
   
   const testOptions: TestOption[] = [

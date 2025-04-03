@@ -294,4 +294,6 @@ export const SurveyResult: React.FC = () => {
       </div>
     </div>
   );
-}; 
+};
+
+export default SurveyResult; 

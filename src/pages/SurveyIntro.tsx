@@ -145,4 +145,6 @@ export const SurveyIntro: React.FC = () => {
       </div>
     </div>
   );
-}; 
+};
+
+export default SurveyIntro; 

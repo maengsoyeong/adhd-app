@@ -223,4 +223,6 @@ export const SurveyTest: React.FC = () => {
       </div>
     </>
   );
-}; 
+};
+
+export default SurveyTest; 
