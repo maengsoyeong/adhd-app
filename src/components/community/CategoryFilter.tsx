@@ -23,9 +23,8 @@ export const CategoryFilter: React.FC<CategoryFilterProps> = ({
         {categories.map(category => (
           <li className="nav-item" key={category.id}>
             <button 
-              className={`nav-link ${activeFilter === category.id ? 'active' : ''}`} 
+              className={`nav-link ${activeFilter === category.id ? 'active category-' + category.id : ''}`}
               onClick={() => onFilterChange(category.id)}
-              style={activeFilter === category.id ? { backgroundColor: category.color } : {}}
             >
               {category.name}
             </button>

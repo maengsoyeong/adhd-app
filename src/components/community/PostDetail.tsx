@@ -37,11 +37,6 @@ export const PostDetail: React.FC<PostDetailProps> = ({
     return category ? category.name : '기타';
   };
 
-  const getCategoryColor = (categoryId: string) => {
-    const category = categories.find(c => c.id === categoryId);
-    return category ? category.color : '#6c757d';
-  };
-
   // 댓글 제출
   const handleCommentSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -80,13 +75,7 @@ export const PostDetail: React.FC<PostDetailProps> = ({
           <div className="modal-body">
             <div className="d-flex justify-content-between align-items-center mb-3">
               <div>
-                <span 
-                  className="badge me-2"
-                  style={{ 
-                    backgroundColor: getCategoryColor(post.category),
-                    color: '#fff'
-                  }}
-                >
+                <span className={`badge me-2 category-${post.category}`}>
                   {getCategoryName(post.category)}
                 </span>
                 <span className="text-muted">
@@ -110,8 +99,7 @@ export const PostDetail: React.FC<PostDetailProps> = ({
                 <img 
                   src={post.imageUrl} 
                   alt={post.title} 
-                  className="img-fluid rounded" 
-                  style={{ maxHeight: '400px' }}
+                  className="img-fluid rounded post-detail-image" 
                 />
               </div>
             )}
@@ -130,8 +118,9 @@ export const PostDetail: React.FC<PostDetailProps> = ({
               </div>
             )}
             
-            <div className="reaction-buttons mb-4">
-              <div className="d-flex flex-wrap gap-2">
+            <div className="reactions-container mb-4">
+              <h6 className="mb-3">이 글에 반응하기</h6>
+              <div className="d-flex flex-wrap justify-content-between">
                 {reactions.map(reaction => (
                   <button 
                     key={reaction.id}

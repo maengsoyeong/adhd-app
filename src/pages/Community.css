@@ -313,24 +313,34 @@
 }
 
 /* 카테고리 태그 색상 */
+.category-all {
+  background-color: #6c757d !important;
+  color: #fff !important;
+}
+
 .category-daily {
   background-color: #0d6efd !important;
+  color: #fff !important;
 }
 
 .category-worry {
   background-color: #dc3545 !important;
+  color: #fff !important;
 }
 
 .category-question {
   background-color: #198754 !important;
+  color: #fff !important;
 }
 
 .category-share {
   background-color: #6f42c1 !important;
+  color: #fff !important;
 }
 
 .category-support {
   background-color: #fd7e14 !important;
+  color: #fff !important;
 }
 
 /* 게시글 목록 아이템 */
@@ -351,4 +361,15 @@
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+/* 게시글 상세 이미지 */
+.post-detail-image {
+  max-height: 400px;
+  object-fit: contain;
+}
+
+/* 네비게이션 버튼 활성화 시 */
+.nav-link.active {
+  color: #fff !important;
 } 

@@ -61,13 +61,7 @@ export const PostList: React.FC<PostListProps> = ({
               )}
               <div className="card-body">
                 <div className="d-flex justify-content-between align-items-start mb-2">
-                  <span 
-                    className="badge"
-                    style={{ 
-                      backgroundColor: getCategoryColor(post.category),
-                      color: '#fff'
-                    }}
-                  >
+                  <span className={`badge category-${post.category}`}>
                     {getCategoryName(post.category)}
                   </span>
                   <small className="text-muted">{post.date}</small>
