@@ -1,0 +1,216 @@
+/* 헤더 섹션 */
+.about-header {
+  background-color: #10b981; /* bg-emerald-500 */
+  padding-top: 5rem;
+  padding-bottom: 5rem;
+  position: relative;
+}
+
+.about-title {
+  font-size: 6rem;
+  font-weight: 700;
+  color: white;
+  text-align: right;
+  padding-right: 2rem;
+}
+
+@media (min-width: 768px) {
+  .about-title {
+    font-size: 8rem;
+  }
+}
+
+/* 탭 메뉴 */
+.tab-container {
+  border-bottom: 1px solid #e5e7eb; /* border-gray-200 */
+}
+
+.tab-link {
+  display: inline-block;
+  padding: 1rem;
+  font-size: 1.125rem;
+  font-weight: 500;
+}
+
+.tab-link-active {
+  color: #1f2937; /* text-gray-800 */
+  border-bottom: 2px solid #9333ea; /* border-purple-600 */
+}
+
+.tab-link-inactive {
+  color: #6b7280; /* text-gray-500 */
+  border-bottom: 2px solid transparent;
+}
+
+.tab-link-inactive:hover {
+  color: #1f2937; /* text-gray-800 */
+  border-bottom: 2px solid #d1d5db; /* border-gray-300 */
+}
+
+/* 메인 콘텐츠 */
+.about-content {
+  background-color: #fdf2f8; /* bg-pink-50 */
+  padding-top: 4rem;
+  padding-bottom: 4rem;
+}
+
+.section-title {
+  font-size: 1.875rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+  color: #1f2937; /* text-gray-800 */
+}
+
+@media (min-width: 768px) {
+  .section-title {
+    font-size: 2.25rem;
+  }
+}
+
+.card {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 1.5rem;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+.card-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: #7e22ce; /* text-purple-700 */
+}
+
+.card-text {
+  color: #374151; /* text-gray-700 */
+  margin-bottom: 1rem;
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2.5rem;
+}
+
+@media (min-width: 768px) {
+  .card-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.value-card {
+  padding: 1rem;
+  background-color: #f5f3ff; /* bg-purple-50 */
+  border-radius: 1rem;
+}
+
+.value-title {
+  font-size: 1.25rem;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+  color: #5b21b6; /* text-purple-800 */
+}
+
+.value-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .value-grid {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+}
+
+/* 인터뷰 섹션 */
+.interview-card {
+  margin-bottom: 2rem;
+}
+
+.interview-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+@media (min-width: 768px) {
+  .interview-content {
+    flex-direction: row;
+  }
+}
+
+.interview-image-container {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  background-color: #ddd6fe; /* bg-purple-200 */
+  border-radius: 1rem;
+  overflow: hidden;
+}
+
+@media (min-width: 768px) {
+  .interview-image-container {
+    width: 33.333333%;
+  }
+}
+
+.interview-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.interview-text {
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .interview-text {
+    width: 66.666667%;
+  }
+}
+
+.interview-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #7e22ce; /* text-purple-700 */
+}
+
+.interview-date {
+  font-size: 0.875rem;
+  color: #6b7280; /* text-gray-500 */
+  margin-bottom: 1rem;
+}
+
+.container {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+@media (min-width: 640px) {
+  .container {
+    max-width: 640px;
+  }
+}
+
+@media (min-width: 768px) {
+  .container {
+    max-width: 768px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .container {
+    max-width: 1024px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .container {
+    max-width: 1280px;
+  }
+} 
