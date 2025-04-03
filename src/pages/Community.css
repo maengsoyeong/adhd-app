@@ -1,0 +1,103 @@
+/* 별 반짝임 애니메이션 */
+@keyframes twinkle {
+  0% {
+    opacity: 0.2;
+    transform: scale(0.8);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+  100% {
+    opacity: 0.2;
+    transform: scale(0.8);
+  }
+}
+
+.star {
+  animation: twinkle infinite;
+  box-shadow: 0 0 10px 2px rgba(255, 255, 255, 0.7);
+}
+
+/* 유성 애니메이션 */
+@keyframes shootingStar {
+  0% {
+    transform: translateX(0) translateY(0) rotate(-45deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(-500px) translateY(500px) rotate(-45deg);
+    opacity: 0;
+  }
+}
+
+.shooting-star {
+  position: absolute;
+  width: 100px;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 50%, rgba(255,255,255,0) 100%);
+  animation: shootingStar 2s linear infinite;
+  box-shadow: 0 0 10px 1px rgba(255, 255, 255, 0.5);
+}
+
+/* 별빛 배경 효과 */
+.stars-container {
+  z-index: 0;
+}
+
+/* 글라스모피즘 효과 */
+.glass-card {
+  background: rgba(30, 27, 75, 0.25);
+  -webkit-backdrop-filter: blur(10px); /* Safari 9+, iOS Safari 9+ 지원 */
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* 블러 효과가 있는 카드 */
+.blur-card {
+  -webkit-backdrop-filter: blur(10px); /* Safari 9+, iOS Safari 9+ 지원 */
+  backdrop-filter: blur(10px);
+}
+
+/* 애니메이션 효과 */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.post-item {
+  animation: fadeIn 0.5s ease-out;
+}
+
+/* 호버 효과 */
+.post-item:hover {
+  box-shadow: 0 4px 15px rgba(124, 58, 237, 0.1);
+  transform: translateY(-2px);
+  transition: all 0.3s ease;
+}
+
+/* 버튼 효과 */
+.read-more:hover {
+  background-color: #7c3aed;
+  color: white;
+  transition: all 0.3s ease;
+}
+
+/* 스크롤바 스타일링 */
+.post-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.post-list::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+.post-list::-webkit-scrollbar-thumb {
+  background: #c4b5fd;
+  border-radius: 10px;
+}
+
+.post-list::-webkit-scrollbar-thumb:hover {
+  background: #a78bfa;
+} 

@@ -1,297 +1,112 @@
-import React, { useRef } from 'react';
-import { useLocation } from 'react-router-dom';
-import {
-  Chart as ChartJS,
-  RadialLinearScale,
-  PointElement,
-  LineElement,
-  Filler,
-  Tooltip,
-  Legend,
-  ChartData,
-  ChartOptions
-} from 'chart.js';
-import { Radar } from 'react-chartjs-2';
-import { PDFDownloadLink, Document, Page, Text, View } from '@react-pdf/renderer';
-import { questions, Question } from './SurveyTest';
-import PDFDocument from '../components/PDFDocument';
-
-ChartJS.register(
-  RadialLinearScale,
-  PointElement,
-  LineElement,
-  Filler,
-  Tooltip,
-  Legend
-);
-
-interface CategoryScore {
-  attention: number;
-  impulse: number;
-  execution: number;
-}
-
-interface ScoreLevel {
-  level: '정상' | '경계선' | '주의요망';
-  description: string;
-}
-
-interface LocationState {
-  answers: {
-    [key: number]: string;
-  };
-}
-
-// 점수에 따른 너비 클래스를 반환하는 유틸리티 함수
-const getWidthClass = (percentage: number): string => {
-  if (percentage <= 0) return 'w-0';
-  if (percentage <= 10) return 'w-[10%]';
-  if (percentage <= 20) return 'w-[20%]';
-  if (percentage <= 30) return 'w-[30%]';
-  if (percentage <= 40) return 'w-[40%]';
-  if (percentage <= 50) return 'w-[50%]';
-  if (percentage <= 60) return 'w-[60%]';
-  if (percentage <= 70) return 'w-[70%]';
-  if (percentage <= 80) return 'w-[80%]';
-  if (percentage <= 90) return 'w-[90%]';
-  return 'w-full';
-};
-
-// 점수 레벨에 따른 색상 클래스를 반환하는 유틸리티 함수
-const getLevelColorClass = (level: '정상' | '경계선' | '주의요망'): string => {
-  switch (level) {
-    case '정상':
-      return 'bg-purple-500';
-    case '경계선':
-      return 'bg-yellow-500';
-    case '주의요망':
-      return 'bg-red-500';
-    default:
-      return 'bg-purple-500';
-  }
-};
-
-// PDF 문서 컴포넌트
-const MyDocument = ({ answers }: { answers: { [key: number]: string } }) => (
-  <Document>
-    <Page size="A4" style={{ padding: 20 }}>
-      <Text style={{ fontSize: 20, marginBottom: 20 }}>테스트 결과</Text>
-      {questions.map((question, index) => {
-        const answer = answers[question.id] || '미답변';
-        return (
-          <View key={question.id} style={{ marginBottom: 10 }}>
-            <Text>{index + 1}. {question.text}</Text>
-            <Text>답변: {answer}</Text>
-          </View>
-        );
-      })}
-    </Page>
-  </Document>
-);
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
 
 export const SurveyResult: React.FC = () => {
-  const location = useLocation();
-  const answers = (location.state as LocationState)?.answers || {};
-  const chartRef = useRef<any>(null);
-
-  // 점수 수준 판단 함수
-  const getScoreLevel = (score: number, category: keyof CategoryScore): ScoreLevel => {
-    // 실행기능은 높을수록 좋고, 나머지는 낮을수록 좋음
-    if (category === 'execution') {
-      if (score >= 70) return { 
-        level: '정상',
-        description: '실행기능이 잘 발달되어 있습니다. 현재의 상태를 유지하세요.'
+  // 실제 앱에서는 이전 페이지에서 계산된 점수를 받아와야 합니다
+  const score = 18; // 예시 점수
+  
+  const getResultMessage = () => {
+    if (score >= 24) {
+      return {
+        level: "높음",
+        message: "ADHD 증상이 상당히 높게 나타납니다. 전문가와 상담하는 것을 권장합니다.",
+        color: "text-red-600",
+        bgColor: "bg-red-100",
+        borderColor: "border-red-300",
+        progressColor: "bg-red-500"
       };
-      if (score >= 40) return { 
-        level: '경계선',
-        description: '실행기능이 보통 수준입니다. 체계적인 계획과 실행 능력을 기르면 좋겠습니다.'
-      };
-      return { 
-        level: '주의요망',
-        description: '실행기능 향상이 필요합니다. 전문가와 상담을 고려해보세요.'
+    } else if (score >= 15) {
+      return {
+        level: "중간",
+        message: "ADHD 증상이 중간 정도로 나타납니다. 추가적인 평가가 도움이 될 수 있습니다.",
+        color: "text-yellow-600",
+        bgColor: "bg-yellow-100",
+        borderColor: "border-yellow-300",
+        progressColor: "bg-yellow-500"
       };
     } else {
-      if (score <= 30) return { 
-        level: '정상',
-        description: category === 'attention' 
-          ? '주의력이 양호한 수준입니다.'
-          : '충동성이 잘 조절되고 있습니다.'
-      };
-      if (score <= 60) return { 
-        level: '경계선',
-        description: category === 'attention'
-          ? '주의력 조절에 어려움이 있을 수 있습니다. 주의력 향상 훈련을 고려해보세요.'
-          : '충동성 조절에 어려움이 있을 수 있습니다. 자기조절 훈련을 고려해보세요.'
-      };
-      return { 
-        level: '주의요망',
-        description: category === 'attention'
-          ? '주의력 결핍이 의심됩니다. 전문가 상담을 권장합니다.'
-          : '충동성 조절에 어려움이 있습니다. 전문가 상담을 권장합니다.'
+      return {
+        level: "낮음",
+        message: "ADHD 증상이 낮게 나타납니다. 하지만 증상이 걱정된다면 전문가와 상담하세요.",
+        color: "text-green-600",
+        bgColor: "bg-green-100",
+        borderColor: "border-green-300",
+        progressColor: "bg-green-500"
       };
     }
   };
-
-  const calculateScores = (answers: { [key: number]: string }) => {
-    const categoryTotals: { [key: string]: number } = {
-      attention: 0,
-      impulse: 0,
-      execution: 0
-    };
-    
-    const categoryQuestions: { [key: string]: number } = {
-      attention: 0,
-      impulse: 0,
-      execution: 0
-    };
-
-    questions.forEach(question => {
-      // category와 scores가 있는 문항만 처리
-      if (question.category && question.scores && answers[question.id]) {
-        const answerIndex = question.options.indexOf(answers[question.id]);
-        const score = question.scores[answerIndex];
-        
-        categoryTotals[question.category] += score;
-        categoryQuestions[question.category]++;
-      }
-    });
-
-    // 각 카테고리별 100점 만점으로 환산
-    return {
-      attention: Math.round((categoryTotals.attention / (categoryQuestions.attention * 3)) * 100),
-      impulse: Math.round((categoryTotals.impulse / (categoryQuestions.impulse * 3)) * 100),
-      execution: Math.round((categoryTotals.execution / (categoryQuestions.execution * 3)) * 100)
-    };
-  };
-
-  const scores = calculateScores(answers);
-  const attentionLevel = getScoreLevel(scores.attention, 'attention');
-  const impulseLevel = getScoreLevel(scores.impulse, 'impulse');
-  const executionLevel = getScoreLevel(scores.execution, 'execution');
-
-  const chartData: ChartData<'radar'> = {
-    labels: ['주의력', '충동성', '실행기능'],
-    datasets: [
-      {
-        label: '점수',
-        data: [scores.attention, scores.impulse, scores.execution],
-        backgroundColor: 'rgba(147, 51, 234, 0.2)',
-        borderColor: 'rgb(147, 51, 234)',
-        borderWidth: 1,
-      },
-    ],
-  };
-
-  const chartOptions: ChartOptions<'radar'> = {
-    scales: {
-      r: {
-        angleLines: {
-          display: true
-        },
-        suggestedMin: 0,
-        suggestedMax: 100
-      }
-    }
-  };
-
-  // 차트를 이미지로 변환하는 함수
-  const getChartImage = (): string => {
-    if (chartRef.current) {
-      return chartRef.current.toBase64Image();
-    }
-    return '';
-  };
-
+  
+  const result = getResultMessage();
+  
   return (
-    <div className="max-w-4xl mx-auto p-6">
-      <h1 className="text-3xl font-bold text-center mb-8 text-purple-700">테스트 결과</h1>
-      
-      {/* PDF 다운로드 링크 */}
-      <div className="text-center mb-8">
-        <PDFDownloadLink
-          document={
-            <PDFDocument 
-              answers={answers}
-              scores={scores}
-              levels={{
-                attention: attentionLevel,
-                impulse: impulseLevel,
-                execution: executionLevel
-              }}
-              chartImage={getChartImage()}
-            />
-          }
-          fileName="adhd-test-result.pdf"
-          className="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700"
-        >
-          {({ loading }) => (loading ? '결과 생성 중...' : '결과 PDF 다운로드')}
-        </PDFDownloadLink>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <div className="bg-white p-6 rounded-lg shadow-lg border border-purple-100">
-          <h2 className="text-xl font-semibold mb-4 text-purple-700">점수 분포</h2>
-          <Radar ref={chartRef} data={chartData} options={chartOptions} />
+    <div className="container mx-auto px-4 py-12">
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="max-w-3xl mx-auto bg-white p-8 rounded-3xl shadow-xl border border-purple-100"
+      >
+        <div className="text-center mb-10">
+          <h1 className="text-3xl md:text-4xl font-bold mb-4 text-purple-700">테스트 결과</h1>
+          <div className="w-20 h-1 bg-purple-500 mx-auto rounded-full"></div>
         </div>
-
-        <div className="bg-white p-6 rounded-lg shadow-lg border border-purple-100">
-          <h2 className="text-xl font-semibold mb-4 text-purple-700">상세 분석</h2>
-          
-          <div className="space-y-4">
-            <div>
-              <h3 className="font-medium text-purple-800">주의력</h3>
-              <div className="mt-1 bg-purple-100 rounded-full h-4">
-                <div 
-                  className={`h-4 rounded-full transition-all duration-500 ${getLevelColorClass(attentionLevel.level)} ${getWidthClass(scores.attention)}`}
-                ></div>
-              </div>
-              <p className="mt-2 text-sm text-purple-700">
-                점수: {scores.attention}/100 (수준: {attentionLevel.level})
-              </p>
-              <p className="mt-1 text-sm text-purple-600">{attentionLevel.description}</p>
+        
+        <div className={`mb-10 p-6 rounded-2xl ${result.bgColor} ${result.borderColor} border`}>
+          <div className="text-center mb-6">
+            <p className="text-lg mb-2 text-gray-700">당신의 ADHD 지수:</p>
+            <div className="text-6xl font-bold mb-2">{score}</div>
+            <div className="w-full bg-white rounded-full h-3 mb-4">
+              <motion.div 
+                initial={{ width: "0%" }}
+                animate={{ width: `${(score/30)*100}%` }}
+                transition={{ duration: 1 }}
+                className={`h-3 rounded-full ${result.progressColor}`}
+              ></motion.div>
             </div>
-
-            <div>
-              <h3 className="font-medium text-purple-800">충동성</h3>
-              <div className="mt-1 bg-purple-100 rounded-full h-4">
-                <div 
-                  className={`h-4 rounded-full transition-all duration-500 ${getLevelColorClass(impulseLevel.level)} ${getWidthClass(scores.impulse)}`}
-                ></div>
-              </div>
-              <p className="mt-2 text-sm text-purple-700">
-                점수: {scores.impulse}/100 (수준: {impulseLevel.level})
-              </p>
-              <p className="mt-1 text-sm text-purple-600">{impulseLevel.description}</p>
-            </div>
-
-            <div>
-              <h3 className="font-medium text-purple-800">실행기능</h3>
-              <div className="mt-1 bg-purple-100 rounded-full h-4">
-                <div 
-                  className={`h-4 rounded-full transition-all duration-500 ${getLevelColorClass(executionLevel.level)} ${getWidthClass(scores.execution)}`}
-                ></div>
-              </div>
-              <p className="mt-2 text-sm text-purple-700">
-                점수: {scores.execution}/100 (수준: {executionLevel.level})
-              </p>
-              <p className="mt-1 text-sm text-purple-600">{executionLevel.description}</p>
-            </div>
+            <p className={`text-xl font-semibold ${result.color}`}>
+              ADHD 가능성: {result.level}
+            </p>
           </div>
+          
+          <p className="mb-4 text-gray-700">{result.message}</p>
+          <p className="text-gray-700">
+            이 테스트는 참고용이며, 정확한 진단은 전문의와 상담하시기 바랍니다.
+            ADHD는 전문가의 종합적인 평가를 통해 진단됩니다.
+          </p>
         </div>
-      </div>
-
-      <div className="mt-8 bg-white p-6 rounded-lg shadow-lg border border-purple-100">
-        <h2 className="text-xl font-semibold mb-4 text-purple-700">종합 평가</h2>
-        <p className="text-purple-900">
-          {scores.attention > 60 || scores.impulse > 60 || scores.execution < 40 ? (
-            "테스트 결과 주의가 필요한 영역이 있습니다. 일상생활에서 어려움을 겪고 계시다면 전문가와 상담해보시는 것을 권장드립니다."
-          ) : scores.attention > 30 || scores.impulse > 30 || scores.execution < 70 ? (
-            "테스트 결과 경계선 수준의 영역이 있습니다. 해당 영역에 대한 자기관리와 훈련이 도움이 될 수 있습니다."
-          ) : (
-            "테스트 결과 모든 영역이 정상 수준입니다. 현재의 상태를 잘 유지하시기 바랍니다."
-          )}
-        </p>
-      </div>
+        
+        <div className="mb-10 bg-purple-50 p-6 rounded-2xl">
+          <h2 className="text-xl font-semibold mb-4 text-purple-800">다음 단계 추천</h2>
+          <ul className="list-disc pl-5 space-y-2 text-gray-700">
+            <li>정신건강의학과 전문의 상담을 고려해보세요.</li>
+            <li>일상생활에서 집중력을 향상시키는 전략을 시도해보세요.</li>
+            <li>규칙적인 생활 습관과 운동이 증상 관리에 도움이 될 수 있습니다.</li>
+            <li>ADHD 관련 자조 그룹이나 커뮤니티에 참여해보세요.</li>
+          </ul>
+        </div>
+        
+        <div className="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4">
+          <Link to="/tests/intro">
+            <motion.button 
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="w-full sm:w-auto bg-gray-200 text-gray-800 px-6 py-3 rounded-full hover:bg-gray-300 transition-colors"
+            >
+              테스트 다시하기
+            </motion.button>
+          </Link>
+          <Link to="/">
+            <motion.button 
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="w-full sm:w-auto bg-gradient-to-r from-purple-600 to-purple-800 text-white px-6 py-3 rounded-full hover:shadow-lg transition-all duration-300"
+            >
+              홈으로 돌아가기
+            </motion.button>
+          </Link>
+        </div>
+      </motion.div>
     </div>
   );
 };

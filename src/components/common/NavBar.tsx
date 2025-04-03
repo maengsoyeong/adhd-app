@@ -49,149 +49,52 @@ const NavBar: React.FC = () => {
   ];
 
   return (
-    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-      isScrolled ? 'bg-white shadow-sm py-2' : 'bg-white py-4'
-    }`}>
+    <header className="bg-white shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center">
-          {/* 로고 클릭 시 홈으로 연결 */}
-          <div className="flex-shrink-0">
+        <div className="flex justify-between h-16 items-center">
+          <div className="flex items-center">
             <Link to="/" className="flex items-center">
-              <Logo className="h-10 w-auto" variant={isScrolled ? 'default' : 'white'} />
+              <Logo className="h-10 w-auto" />
+              <span className="ml-2 text-xl font-bold text-purple-600">퍼즐핏</span>
             </Link>
           </div>
-
-          {/* 데스크탑 메뉴 */}
-          <div className="hidden md:flex md:items-center md:space-x-12">
-            {navLinks.map((link) => 
-              !link.children ? (
-                <Link
-                  key={link.name}
-                  to={link.href}
-                  className={`relative px-1 py-2 font-medium text-base transition-colors duration-200 ${
-                    location.pathname === link.href
-                      ? 'text-gray-900 font-semibold'
-                      : 'text-gray-600 hover:text-gray-900'
-                  }`}
-                >
-                  {link.name}
+          
+          <nav className="flex space-x-8">
+            <Link to="/" className="text-gray-700 hover:text-purple-600 px-3 py-2 text-sm font-medium">
+              Home
+            </Link>
+            <Link to="/about" className="text-gray-700 hover:text-purple-600 px-3 py-2 text-sm font-medium">
+              About
+            </Link>
+            <div className="relative group">
+              <button className="text-gray-700 hover:text-purple-600 px-3 py-2 text-sm font-medium flex items-center">
+                Services
+                <svg className="ml-1 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                  <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
+                </svg>
+              </button>
+              <div className="absolute left-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10 hidden group-hover:block">
+                <Link to="/tests/intro" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                  ADHD 테스트
                 </Link>
-              ) : (
-                <Menu as="div" key={link.name} className="relative">
-                  {({ open }) => (
-                    <>
-                      <Menu.Button 
-                        className="group inline-flex items-center px-1 py-2 font-medium text-base text-gray-600 hover:text-gray-900"
-                      >
-                        {link.name}
-                        <ChevronDownIcon 
-                          className={`ml-1 h-4 w-4 transition-transform duration-200 ${
-                            open ? 'rotate-180' : ''
-                          } text-gray-500`}
-                        />
-                      </Menu.Button>
-                      <Transition
-                        as={Fragment}
-                        enter="transition ease-out duration-100"
-                        enterFrom="transform opacity-0 scale-95"
-                        enterTo="transform opacity-100 scale-100"
-                        leave="transition ease-in duration-75"
-                        leaveFrom="transform opacity-100 scale-100"
-                        leaveTo="transform opacity-0 scale-95"
-                      >
-                        <Menu.Items className="absolute right-0 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                          <div className="py-1">
-                            {link.children.map((child) => (
-                              <Menu.Item key={child.name}>
-                                {({ active }) => (
-                                  <Link
-                                    to={child.href}
-                                    className={`${
-                                      active ? 'bg-gray-100 text-gray-900' : 'text-gray-700'
-                                    } block px-4 py-2 text-sm`}
-                                  >
-                                    {child.name}
-                                  </Link>
-                                )}
-                              </Menu.Item>
-                            ))}
-                          </div>
-                        </Menu.Items>
-                      </Transition>
-                    </>
-                  )}
-                </Menu>
-              )
-            )}
-          </div>
-
-          {/* 모바일 메뉴 버튼 */}
-          <div className="md:hidden">
-            <button
-              onClick={toggleMobileMenu}
-              className="p-2 rounded-md text-gray-600 hover:text-gray-900 hover:bg-gray-100"
-            >
-              {isMobileMenuOpen ? (
-                <XIcon className="h-6 w-6" />
-              ) : (
-                <MenuIcon className="h-6 w-6" />
-              )}
-            </button>
-          </div>
+                <Link to="/tests/self-check" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                  자가진단
+                </Link>
+              </div>
+            </div>
+            <Link to="/information" className="text-gray-700 hover:text-purple-600 px-3 py-2 text-sm font-medium">
+              Information
+            </Link>
+            <Link to="/community" className="text-gray-700 hover:text-purple-600 px-3 py-2 text-sm font-medium">
+              Community
+            </Link>
+            <Link to="/contact" className="text-gray-700 hover:text-purple-600 px-3 py-2 text-sm font-medium">
+              Contact
+            </Link>
+          </nav>
         </div>
       </div>
-
-      {/* 모바일 메뉴 */}
-      <div 
-        className={`md:hidden transition-all duration-300 ease-in-out overflow-hidden bg-white shadow-lg ${
-          isMobileMenuOpen ? 'max-h-[500px]' : 'max-h-0'
-        }`}
-      >
-        <div className="px-2 pt-2 pb-3 space-y-1">
-          {navLinks.map((link) => 
-            !link.children ? (
-              <Link
-                key={link.name}
-                to={link.href}
-                className={`block px-3 py-2 rounded-md text-base font-medium ${
-                  location.pathname === link.href
-                    ? 'bg-gray-100 text-gray-900'
-                    : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900'
-                }`}
-              >
-                {link.name}
-              </Link>
-            ) : (
-              <Disclosure key={link.name}>
-                {({ open }) => (
-                  <>
-                    <Disclosure.Button className="flex justify-between w-full px-3 py-2 text-base font-medium text-gray-700 rounded-md hover:bg-gray-100 hover:text-gray-900">
-                      <span>{link.name}</span>
-                      <ChevronDownIcon
-                        className={`${
-                          open ? 'transform rotate-180' : ''
-                        } w-5 h-5 text-gray-500`}
-                      />
-                    </Disclosure.Button>
-                    <Disclosure.Panel className="px-4 pt-2 pb-2 space-y-1">
-                      {link.children.map((child) => (
-                        <Link
-                          key={child.name}
-                          to={child.href}
-                          className="block pl-3 pr-4 py-2 text-sm text-gray-600 hover:bg-gray-100 hover:text-gray-900 rounded-md"
-                        >
-                          {child.name}
-                        </Link>
-                      ))}
-                    </Disclosure.Panel>
-                  </>
-                )}
-              </Disclosure>
-            )
-          )}
-        </div>
-      </div>
-    </nav>
+    </header>
   );
 };
 

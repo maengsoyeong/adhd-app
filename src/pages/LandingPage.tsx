@@ -1,240 +1,148 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import NavBar from '../components/common/NavBar';
-import Footer from '../components/layout/Footer';
-import Button from '../components/common/Button';
+import { motion } from 'framer-motion';
 
 const LandingPage: React.FC = () => {
   return (
-    <div className="min-h-screen bg-white">
-      <NavBar />
-      
-      {/* 히어로 섹션 - 이미지에 맞게 수정 */}
-      <section className="relative pt-32 pb-20 overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-          {/* 배경 원형 요소들 */}
-          <div className="absolute top-20 right-10 w-80 h-80 bg-teal-300 rounded-full opacity-80 z-0"></div>
-          <div className="absolute -bottom-20 -left-20 w-96 h-96 bg-purple-400 rounded-full opacity-80 z-0"></div>
-          <div className="absolute bottom-40 right-0 w-64 h-64 bg-lime-300 rounded-full opacity-80 z-0"></div>
-          
-          {/* 오렌지색 사각형 */}
-          <div className="absolute top-20 left-10 w-64 h-64 bg-orange-400 rounded-3xl z-0"></div>
-          
-          {/* 콘텐츠 */}
-          <div className="relative z-10 text-center md:text-right md:mr-20 mb-16">
-            <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
-              혹시, 나도 ADHD?!
+    <div className="min-h-screen bg-white overflow-hidden">
+      {/* 헤더 섹션 */}
+      <div className="relative">
+        {/* 배경 장식 요소들 */}
+        <div className="absolute top-20 right-10 w-72 h-72 rounded-full bg-teal-300 opacity-80 blur-xl"></div>
+        <div className="absolute top-40 left-0 w-96 h-96 rounded-full bg-orange-400 opacity-80 blur-xl"></div>
+        <div className="absolute bottom-0 left-40 w-80 h-80 rounded-full bg-purple-500 opacity-70 blur-xl"></div>
+        <div className="absolute bottom-20 right-20 w-64 h-64 rounded-full bg-lime-300 opacity-80 blur-xl"></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-40 h-40 rounded-full bg-blue-400 opacity-60 blur-xl"></div>
+        
+        {/* 메인 콘텐츠 */}
+        <div className="relative z-10 container mx-auto px-4 py-20 md:py-32">
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            className="text-center"
+          >
+            <h1 className="text-5xl md:text-7xl font-bold mb-6 text-gray-800">
+              혹시, 나도 <span className="text-purple-600">ADHD</span>?!
             </h1>
-            
-            <div className="mt-10 flex justify-center md:justify-end">
-              <Link to="/tests/intro">
-                <button className="bg-purple-600 text-white font-medium px-8 py-4 rounded-full text-lg hover:bg-purple-700 transition-colors">
-                  지금 바로 시작하기
-                </button>
-              </Link>
-            </div>
-          </div>
-          
-          {/* 행복한 고객 수 표시 */}
-          <div className="relative z-10 flex items-center justify-center mt-20">
-            <div className="flex -space-x-4">
-              <div className="w-12 h-12 bg-green-400 rounded-full flex items-center justify-center text-xl">
-                😊
-              </div>
-              <div className="w-12 h-12 bg-pink-400 rounded-full flex items-center justify-center text-xl">
-                😁
-              </div>
-              <div className="w-12 h-12 bg-green-400 rounded-full flex items-center justify-center text-xl">
-                😃
-              </div>
-            </div>
-            <span className="ml-4 text-xl font-medium text-gray-800">80+ Happy Clients</span>
-          </div>
-        </div>
-      </section>
-      
-      {/* 주요 기능 섹션 */}
-      <section className="py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">퍼즐핏의 주요 기능</h2>
-            <p className="text-xl text-gray-500 max-w-3xl mx-auto">
-              정신 건강 관리를 위한 다양한 기능을 제공합니다
+            <p className="text-xl text-gray-600 mb-10 max-w-3xl mx-auto">
+              5분 만에 완료되는 간단한 테스트로 ADHD 성향을 확인하고 전문가의 도움을 받아보세요.
             </p>
-          </div>
-          
-          <div className="grid md:grid-cols-3 gap-8">
-            {/* 기능 1 */}
-            <div className="bg-purple-50 rounded-xl p-8 text-center">
-              <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center text-purple-600 text-2xl mx-auto mb-6">
-                🧠
-              </div>
-              <h3 className="text-xl font-semibold mb-3">ADHD 자가진단</h3>
-              <p className="text-gray-600">
-                과학적으로 검증된 ADHD 자가진단 테스트로 나의 상태를 확인해보세요.
-              </p>
-            </div>
-            
-            {/* 기능 2 */}
-            <div className="bg-purple-50 rounded-xl p-8 text-center">
-              <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center text-purple-600 text-2xl mx-auto mb-6">
-                📊
-              </div>
-              <h3 className="text-xl font-semibold mb-3">상세한 결과 분석</h3>
-              <p className="text-gray-600">
-                테스트 결과를 다양한 측면에서 분석하여 이해하기 쉽게 제공합니다.
-              </p>
-            </div>
-            
-            {/* 기능 3 */}
-            <div className="bg-purple-50 rounded-xl p-8 text-center">
-              <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center text-purple-600 text-2xl mx-auto mb-6">
-                📱
-              </div>
-              <h3 className="text-xl font-semibold mb-3">PDF 결과 저장</h3>
-              <p className="text-gray-600">
-                테스트 결과를 PDF로 저장하여 전문가 상담 시 활용할 수 있습니다.
-              </p>
-            </div>
-          </div>
+            <Link to="/tests/intro">
+              <motion.button 
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="bg-purple-600 text-white hover:bg-purple-700 text-lg font-semibold py-4 px-10 rounded-full shadow-lg transition duration-300"
+              >
+                지금 바로 시작하기
+              </motion.button>
+            </Link>
+          </motion.div>
         </div>
-      </section>
+      </div>
       
-      {/* 사용 방법 섹션 */}
-      <section className="py-16 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">간단한 3단계로 시작하세요</h2>
-            <p className="text-xl text-gray-500 max-w-3xl mx-auto">
-              누구나 쉽게 사용할 수 있는 직관적인 프로세스
-            </p>
-          </div>
+      {/* 특징 섹션 */}
+      <div className="py-20 bg-gray-50">
+        <div className="container mx-auto px-4">
+          <h2 className="text-3xl md:text-4xl font-bold text-center mb-16 text-gray-800">
+            퍼즐핏이 <span className="text-purple-600">특별한 이유</span>
+          </h2>
           
-          <div className="grid md:grid-cols-3 gap-8">
-            {/* 단계 1 */}
-            <div className="relative">
-              <div className="absolute -left-4 -top-4 w-12 h-12 bg-purple-600 rounded-full flex items-center justify-center text-white text-xl font-bold">
-                1
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+            <motion.div 
+              whileHover={{ y: -10 }}
+              className="bg-white p-8 rounded-2xl shadow-lg"
+            >
+              <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mb-6 mx-auto">
+                <svg className="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                </svg>
               </div>
-              <div className="bg-white rounded-xl p-8 h-full shadow-sm">
-                <h3 className="text-xl font-semibold mb-3">테스트 선택</h3>
-                <p className="text-gray-600">
-                  다양한 자가진단 테스트 중 원하는 테스트를 선택하세요.
-                </p>
-              </div>
-            </div>
+              <h3 className="text-xl font-semibold text-center mb-4 text-gray-800">전문가 검증 테스트</h3>
+              <p className="text-gray-600 text-center">
+                정신건강 전문가들이 개발하고 검증한 테스트로 신뢰할 수 있는 결과를 제공합니다.
+              </p>
+            </motion.div>
             
-            {/* 단계 2 */}
-            <div className="relative">
-              <div className="absolute -left-4 -top-4 w-12 h-12 bg-purple-600 rounded-full flex items-center justify-center text-white text-xl font-bold">
-                2
+            <motion.div 
+              whileHover={{ y: -10 }}
+              className="bg-white p-8 rounded-2xl shadow-lg"
+            >
+              <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mb-6 mx-auto">
+                <svg className="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
+                </svg>
               </div>
-              <div className="bg-white rounded-xl p-8 h-full shadow-sm">
-                <h3 className="text-xl font-semibold mb-3">질문에 답변</h3>
-                <p className="text-gray-600">
-                  간단한 질문에 솔직하게 답변하여 정확한 결과를 얻으세요.
-                </p>
-              </div>
-            </div>
+              <h3 className="text-xl font-semibold text-center mb-4 text-gray-800">맞춤형 솔루션</h3>
+              <p className="text-gray-600 text-center">
+                테스트 결과에 따라 개인에게 맞는 관리 방법과 전문가 연결 서비스를 제공합니다.
+              </p>
+            </motion.div>
             
-            {/* 단계 3 */}
-            <div className="relative">
-              <div className="absolute -left-4 -top-4 w-12 h-12 bg-purple-600 rounded-full flex items-center justify-center text-white text-xl font-bold">
-                3
+            <motion.div 
+              whileHover={{ y: -10 }}
+              className="bg-white p-8 rounded-2xl shadow-lg"
+            >
+              <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mb-6 mx-auto">
+                <svg className="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                </svg>
               </div>
-              <div className="bg-white rounded-xl p-8 h-full shadow-sm">
-                <h3 className="text-xl font-semibold mb-3">결과 확인</h3>
-                <p className="text-gray-600">
-                  상세한 결과 분석을 확인하고 필요시 PDF로 저장하세요.
-                </p>
-              </div>
-            </div>
+              <h3 className="text-xl font-semibold text-center mb-4 text-gray-800">커뮤니티 지원</h3>
+              <p className="text-gray-600 text-center">
+                같은 고민을 가진 사람들과 경험을 나누고 함께 성장할 수 있는 커뮤니티를 제공합니다.
+              </p>
+            </motion.div>
           </div>
         </div>
-      </section>
+      </div>
       
-      {/* 신뢰 요소 섹션 */}
-      <section className="py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">많은 분들이 신뢰하고 있습니다</h2>
-          </div>
-          
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-            <div>
-              <p className="text-4xl font-bold text-purple-600 mb-2">10,000+</p>
-              <p className="text-gray-500">월간 사용자</p>
+      {/* 통계 섹션 */}
+      <div className="py-20 bg-white">
+        <div className="container mx-auto px-4">
+          <div className="flex flex-wrap items-center justify-center">
+            <div className="flex items-center space-x-2 mx-8 my-4">
+              <div className="flex -space-x-2">
+                <div className="w-12 h-12 rounded-full bg-green-400 flex items-center justify-center text-white text-xl">
+                  😊
+                </div>
+                <div className="w-12 h-12 rounded-full bg-pink-400 flex items-center justify-center text-white text-xl">
+                  😍
+                </div>
+                <div className="w-12 h-12 rounded-full bg-orange-400 flex items-center justify-center text-white text-xl">
+                  🤗
+                </div>
+              </div>
+              <div className="text-2xl font-bold text-gray-800">80+ Happy Clients</div>
             </div>
-            <div>
-              <p className="text-4xl font-bold text-purple-600 mb-2">50,000+</p>
-              <p className="text-gray-500">완료된 테스트</p>
+            
+            <div className="mx-8 my-4">
+              <div className="text-2xl font-bold text-gray-800">5,000+ 테스트 완료</div>
             </div>
-            <div>
-              <p className="text-4xl font-bold text-purple-600 mb-2">4.8/5</p>
-              <p className="text-gray-500">사용자 만족도</p>
-            </div>
-            <div>
-              <p className="text-4xl font-bold text-purple-600 mb-2">15+</p>
-              <p className="text-gray-500">협력 전문가</p>
+            
+            <div className="mx-8 my-4">
+              <div className="text-2xl font-bold text-gray-800">20+ 전문가 협력</div>
             </div>
           </div>
         </div>
-      </section>
-      
-      {/* FAQ 섹션 */}
-      <section className="py-16 bg-gray-50">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">자주 묻는 질문</h2>
-          </div>
-          
-          <div className="space-y-6">
-            {/* FAQ 항목 1 */}
-            <div className="bg-white rounded-lg shadow-sm p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">테스트 결과는 얼마나 정확한가요?</h3>
-              <p className="text-gray-600">
-                퍼즐핏의 테스트는 과학적으로 검증된 평가 도구를 기반으로 합니다. 
-                다만, 자가진단 테스트는 전문가의 진단을 대체할 수 없으며 참고용으로만 활용하시기 바랍니다.
-              </p>
-            </div>
-            
-            {/* FAQ 항목 2 */}
-            <div className="bg-white rounded-lg shadow-sm p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">테스트 결과는 저장되나요?</h3>
-              <p className="text-gray-600">
-                현재는 브라우저 세션 동안만 결과가 유지되며, 페이지를 떠나면 결과가 사라집니다. 
-                필요하시면 결과 페이지에서 PDF로 저장하여 보관하실 수 있습니다.
-              </p>
-            </div>
-            
-            {/* FAQ 항목 3 */}
-            <div className="bg-white rounded-lg shadow-sm p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">테스트는 무료인가요?</h3>
-              <p className="text-gray-600">
-                네, 모든 기본 테스트는 무료로 제공됩니다. 추후 더 상세한 분석이나 추가 기능은 
-                유료로 제공될 수 있습니다.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
+      </div>
       
       {/* CTA 섹션 */}
-      <section className="py-20 bg-purple-600">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl font-bold text-white mb-6">지금 바로 시작하세요</h2>
-          <p className="text-xl text-purple-100 mb-8 max-w-3xl mx-auto">
-            나의 정신 건강 상태를 이해하는 첫 걸음, 퍼즐핏과 함께 시작해보세요.
+      <div className="py-20 bg-purple-600">
+        <div className="container mx-auto px-4 text-center">
+          <h2 className="text-3xl md:text-4xl font-bold mb-6 text-white">
+            지금 바로 ADHD 테스트를 시작해보세요
+          </h2>
+          <p className="text-xl text-purple-100 mb-10 max-w-3xl mx-auto">
+            5분 만에 완료되는 간단한 테스트로 ADHD 성향을 확인하고 전문가의 도움을 받아보세요.
           </p>
           <Link to="/tests/intro">
-            <Button variant="secondary" size="lg" className="px-8 py-4 text-lg">
+            <button className="bg-white text-purple-600 hover:bg-gray-100 text-lg font-semibold py-3 px-8 rounded-full shadow-lg hover:shadow-xl transition duration-300 transform hover:-translate-y-1">
               무료 테스트 시작하기
-            </Button>
+            </button>
           </Link>
         </div>
-      </section>
-      
-      <Footer />
+      </div>
     </div>
   );
 };

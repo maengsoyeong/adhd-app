@@ -7,7 +7,7 @@ export default {
   theme: {
     extend: {
       animation: {
-        'float': 'float 6s ease-in-out infinite',
+        'float': 'float 3s ease-in-out infinite',
         'float-slow': 'float 8s ease-in-out infinite',
         'float-medium': 'float 7s ease-in-out infinite',
         'fade-in': 'fadeIn 1s ease-in-out',
@@ -17,7 +17,7 @@ export default {
       keyframes: {
         float: {
           '0%, 100%': { transform: 'translateY(0)' },
-          '50%': { transform: 'translateY(-20px)' },
+          '50%': { transform: 'translateY(-10px)' },
         },
         fadeIn: {
           '0%': { opacity: '0' },
@@ -37,6 +37,12 @@ export default {
         'teal-custom': '#7BDCB5',
         'purple-custom': '#9F7AEA',
         'lime-custom': '#D4FA6B',
+        primary: '#4a6cf7',
+        secondary: '#2d3748',
+        accent: '#f56565',
+      },
+      fontFamily: {
+        sans: ['Inter', 'sans-serif'],
       },
     },
   },

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ProgressBar } from '../components/ProgressBar';
+import { ProgressBar } from '../components/common/ProgressBar';
 
 export interface Question {
   id: number;
@@ -13,62 +13,78 @@ export interface Question {
 export const questions: Question[] = [
   {
     id: 1,
-    text: "업무나 공부 중 쉽게 산만해지나요?",
-    options: ["전혀 아니다", "가끔 그렇다", "자주 그렇다", "항상 그렇다"],
+    text: "일상적인 활동이나 업무에서 세부적인 부분에 주의를 기울이지 못하거나 부주의한 실수를 합니까?",
+    options: ["전혀 그렇지 않다", "가끔 그렇다", "자주 그렇다", "매우 자주 그렇다"],
     category: 'attention',
-    scores: [1, 2, 3, 4]
+    scores: [0, 1, 2, 3]
   },
   {
     id: 2,
-    text: "일을 시작하기 전에 계획을 세우나요?",
-    options: ["항상 그렇다", "자주 그렇다", "가끔 그렇다", "전혀 아니다"],
+    text: "손이나 발을 가만히 두지 못하거나 의자에 앉아서도 몸을 꼼지락거립니까?",
+    options: ["전혀 그렇지 않다", "가끔 그렇다", "자주 그렇다", "매우 자주 그렇다"],
     category: 'execution',
-    scores: [4, 3, 2, 1]
+    scores: [0, 1, 2, 3]
   },
   {
     id: 3,
-    text: "주말에 주로 어떤 활동을 하시나요?",
-    options: ["취미 활동", "휴식", "친목 모임", "자기 개발"]
+    text: "지속적인 정신적 노력이 필요한 과제(예: 수업, 회의)를 피하거나 싫어합니까?",
+    options: ["전혀 그렇지 않다", "가끔 그렇다", "자주 그렇다", "매우 자주 그렇다"],
+    category: 'execution',
+    scores: [0, 1, 2, 3]
   },
   {
     id: 4,
-    text: "어려운 결정을 내릴 때 주로 어떤 방식을 선호하시나요?",
-    options: ["논리적 분석", "직관적 판단", "타인의 조언", "시간을 두고 고민"]
+    text: "다른 사람이 말하는 것을 끝까지 듣지 못합니까?",
+    options: ["전혀 그렇지 않다", "가끔 그렇다", "자주 그렇다", "매우 자주 그렇다"],
+    category: 'attention',
+    scores: [0, 1, 2, 3]
   },
   {
     id: 5,
-    text: "새로운 환경에 적응하는 데 얼마나 걸리시나요?",
-    options: ["매우 빠름", "비교적 빠름", "보통", "시간이 필요함"]
+    text: "지시를 따르지 못하고 일이나 과제를 끝내지 못합니까?",
+    options: ["전혀 그렇지 않다", "가끔 그렇다", "자주 그렇다", "매우 자주 그렇다"],
+    category: 'execution',
+    scores: [0, 1, 2, 3]
   },
   {
     id: 6,
-    text: "일상적인 문제 해결 시 어떤 접근 방식을 선호하시나요?",
-    options: ["체계적 접근", "창의적 접근", "경험 기반", "즉흥적 대처"]
+    text: "조용히 여가 활동이나 놀이에 참여하는 것이 어렵습니까?",
+    options: ["전혀 그렇지 않다", "가끔 그렇다", "자주 그렇다", "매우 자주 그렇다"],
+    category: 'execution',
+    scores: [0, 1, 2, 3]
   },
   {
     id: 7,
-    text: "다른 사람들과 소통할 때 선호하는 방식은 무엇인가요?",
-    options: ["직접 만남", "전화", "문자/채팅", "이메일"]
+    text: "물건을 자주 잃어버립니까? (예: 열쇠, 지갑, 휴대폰 등)",
+    options: ["전혀 그렇지 않다", "가끔 그렇다", "자주 그렇다", "매우 자주 그렇다"],
+    category: 'execution',
+    scores: [0, 1, 2, 3]
   },
   {
     id: 8,
-    text: "새로운 기술이나 도구를 배울 때 어떤 방식을 선호하시나요?",
-    options: ["직접 시도", "매뉴얼 참고", "전문가 도움", "온라인 강의"]
+    text: "외부 자극에 의해 쉽게 주의가 산만해집니까?",
+    options: ["전혀 그렇지 않다", "가끔 그렇다", "자주 그렇다", "매우 자주 그렇다"],
+    category: 'attention',
+    scores: [0, 1, 2, 3]
   },
   {
     id: 9,
-    text: "업무나 학업에서 가장 중요하게 생각하는 것은 무엇인가요?",
-    options: ["효율성", "창의성", "정확성", "협동"]
+    text: "일상적인 활동을 잊어버립니까?",
+    options: ["전혀 그렇지 않다", "가끔 그렇다", "자주 그렇다", "매우 자주 그렇다"],
+    category: 'attention',
+    scores: [0, 1, 2, 3]
   },
   {
     id: 10,
-    text: "변화가 필요한 상황에서 어떤 태도를 보이시나요?",
-    options: ["적극적 수용", "신중한 검토", "점진적 적용", "현상 유지 선호"]
+    text: "자리에서 일어나야 하는 상황에서도 가만히 앉아 있기 어렵습니까?",
+    options: ["전혀 그렇지 않다", "가끔 그렇다", "자주 그렇다", "매우 자주 그렇다"],
+    category: 'execution',
+    scores: [0, 1, 2, 3]
   }
 ];
 
 export const SurveyTest: React.FC = () => {
-  const [answers, setAnswers] = useState<{[key: number]: string}>({});
+  const [answers, setAnswers] = useState<{[key: number]: number}>({});
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const navigate = useNavigate();
 
@@ -78,7 +94,7 @@ export const SurveyTest: React.FC = () => {
   const handleAnswer = (score: number) => {
     setAnswers(prev => ({
       ...prev,
-      [currentQuestion.id]: currentQuestion.options[score]
+      [currentQuestion.id]: score
     }));
     
     // 자동으로 다음 문항으로 이동
@@ -144,7 +160,7 @@ export const SurveyTest: React.FC = () => {
             <div className="w-full max-w-[500px] mx-auto">
               {/* 리커트 척도 라벨 */}
               <div className="flex justify-between mb-4">
-                <span className="text-sm text-gray-500">전혀 아니다</span>
+                <span className="text-sm text-gray-500">전혀 그렇지 않다</span>
                 <span className="text-sm text-gray-500">매우 그렇다</span>
               </div>
 
@@ -155,12 +171,12 @@ export const SurveyTest: React.FC = () => {
                 
                 {/* 버튼 컨테이너 */}
                 <div className="relative flex justify-between">
-                  {[0, 1, 2, 3, 4].map((score) => (
+                  {[0, 1, 2, 3].map((score) => (
                     <button
                       key={score}
                       onClick={() => handleAnswer(score)}
                       className={`w-10 h-10 rounded-full transition-all duration-200 flex items-center justify-center
-                        ${answers[currentQuestion.id] === currentQuestion.options[score]
+                        ${answers[currentQuestion.id] === score
                           ? 'bg-purple-600 text-white transform scale-110 shadow-lg z-10'
                           : 'bg-white hover:bg-purple-100 z-10'
                         } border-2 border-purple-200 hover:border-purple-400`}
