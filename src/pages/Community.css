@@ -100,4 +100,46 @@
 
 .post-list::-webkit-scrollbar-thumb:hover {
   background: #a78bfa;
+}
+
+/* Information Page Styles */
+.blog-post-card {
+  transition: transform 0.3s ease;
+}
+
+.blog-post-card:hover {
+  transform: translateY(-5px);
+}
+
+.blog-post-image {
+  height: 200px;
+  object-fit: cover;
+}
+
+.blog-post-title {
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+}
+
+.blog-post-excerpt {
+  color: #6c757d;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.blog-post-date {
+  font-size: 0.85rem;
+  color: #6c757d;
+}
+
+.blog-post-link {
+  text-decoration: none;
+  color: #0d6efd;
+  font-weight: 500;
+}
+
+.blog-post-link:hover {
+  text-decoration: underline;
 } 

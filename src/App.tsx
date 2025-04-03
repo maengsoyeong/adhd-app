@@ -12,6 +12,7 @@ import CorporateInquiryPage from './pages/CorporateInquiryPage';
 import Community from './pages/Community';
 import LoginPage from './pages/LoginPage';
 import SelfCheckPage from './pages/SelfCheckPage';
+import InformationPage from './pages/InformationPage';
 
 // 테스트 관련 페이지 임포트
 import SurveyIntro from './pages/SurveyIntro';
@@ -54,6 +55,8 @@ const App: React.FC = () => {
                 <Route path="gad7" element={<GAD7Test />} />
               </Route>
             </Route>
+
+            <Route path="/information" element={<InformationPage />} />
           </Route>
         </Routes>
       </Router>
