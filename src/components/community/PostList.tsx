@@ -16,7 +16,7 @@ export const PostList: React.FC<PostListProps> = ({
   categories,
   reactions
 }) => {
-  // 카테고리 이름과 색상 가져오기
+  // 카테고리 이름 가져오기
   const getCategoryName = (categoryId: string) => {
     const category = categories.find(c => c.id === categoryId);
     return category ? category.name : '기타';
@@ -48,59 +48,69 @@ export const PostList: React.FC<PostListProps> = ({
 
   return (
     <div className="box-container">
-      <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-        {posts.map((post) => (
-          <div className="col" key={post.id}>
-            <div className="card h-100 shadow-sm post-item" onClick={() => onPostClick(post)}>
-              {post.imageUrl && (
-                <img 
-                  className="card-img-top post-image" 
-                  src={post.imageUrl} 
-                  alt={post.title}
-                />
-              )}
-              <div className="card-body">
-                <div className="d-flex justify-content-between align-items-start mb-2">
+      <div className="table-responsive">
+        <table className="table table-hover">
+          <thead className="table-light">
+            <tr>
+              <th className="col-no">No</th>
+              <th className="col-category">카테고리</th>
+              <th className="col-title">제목</th>
+              <th className="col-author">글쓴이</th>
+              <th className="col-date">작성시간</th>
+              <th className="col-views">조회수</th>
+            </tr>
+          </thead>
+          <tbody>
+            {posts.map((post, index) => (
+              <tr 
+                key={post.id} 
+                onClick={() => onPostClick(post)}
+                className="post-row"
+              >
+                <td>{posts.length - index}</td>
+                <td>
                   <span className={`badge category-${post.category}`}>
                     {getCategoryName(post.category)}
                   </span>
-                  <small className="text-muted">{post.date}</small>
-                </div>
-                <h5 className="card-title">{post.title}</h5>
-                <p className="card-text post-content">{post.content}</p>
-                
-                {post.tags && post.tags.length > 0 && (
-                  <div className="mb-2">
-                    {post.tags.map((tag, index) => (
-                      <span key={index} className="badge bg-light text-dark me-1">#{tag}</span>
-                    ))}
+                </td>
+                <td>
+                  <div className="d-flex align-items-center">
+                    <span className="post-title-text">{post.title}</span>
+                    {post.comments.length > 0 && (
+                      <span className="ms-2 text-primary">
+                        [{post.comments.length}]
+                      </span>
+                    )}
+                    {Object.values(post.reactions).some(count => count > 0) && (
+                      <span className="ms-2 text-danger">
+                        <i className="bi bi-heart-fill"></i>
+                      </span>
+                    )}
                   </div>
-                )}
-              </div>
-              <div className="card-footer bg-white">
-                <div className="d-flex justify-content-between align-items-center">
-                  <small className="text-muted">
-                    {post.isAnonymous ? '익명' : post.author} • 댓글 {post.comments.length}개
-                  </small>
-                  <div className="reaction-summary">
-                    {Object.entries(post.reactions)
-                      .filter(([_, count]) => count > 0)
-                      .slice(0, 3)
-                      .map(([type, count]) => {
-                        const reaction = reactions.find(r => r.id === type);
-                        return reaction ? (
-                          <span key={type} className="me-2">
-                            {reaction.emoji} {count}
-                          </span>
-                        ) : null;
-                      })}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        ))}
+                </td>
+                <td>{post.isAnonymous ? '익명' : post.author}</td>
+                <td>{post.date}</td>
+                <td>{Math.floor(Math.random() * 100) + 10}</td> {/* 임시 조회수 */}
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
+      
+      {/* 페이지네이션 */}
+      <nav aria-label="Page navigation">
+        <ul className="pagination justify-content-center mt-4">
+          <li className="page-item disabled">
+            <a className="page-link" href="#" tabIndex={-1} aria-disabled="true">이전</a>
+          </li>
+          <li className="page-item active"><a className="page-link" href="#">1</a></li>
+          <li className="page-item"><a className="page-link" href="#">2</a></li>
+          <li className="page-item"><a className="page-link" href="#">3</a></li>
+          <li className="page-item">
+            <a className="page-link" href="#">다음</a>
+          </li>
+        </ul>
+      </nav>
     </div>
   );
 }; 

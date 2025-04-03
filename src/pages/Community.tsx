@@ -79,6 +79,9 @@ const Community: React.FC = () => {
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [editPostId, setEditPostId] = useState<string | null>(null);
 
+  const [searchTerm, setSearchTerm] = useState('');
+  const [searchCategory, setSearchCategory] = useState('title'); // 'title', 'content', 'author'
+
   useEffect(() => {
     // 로그인 상태 확인
     const checkLoginStatus = () => {
@@ -295,6 +298,12 @@ const Community: React.FC = () => {
     }));
   };
 
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    // 검색 로직 구현
+    // ...
+  };
+
   return (
     <div className="container py-5">
       {/* 로그인 상태에 따라 다른 헤더 표시 */}
@@ -347,6 +356,31 @@ const Community: React.FC = () => {
         activeFilter={activeFilter} 
         onFilterChange={filterPosts} 
       />
+      
+      {/* 검색 폼 */}
+      <div className="box-container mb-4">
+        <form onSubmit={handleSearch} className="d-flex">
+          <select 
+            className="form-select me-2 search-category-select" 
+            value={searchCategory}
+            onChange={(e) => setSearchCategory(e.target.value)}
+            aria-label="검색 카테고리 선택"
+            title="검색 카테고리 선택"
+          >
+            <option value="title">제목</option>
+            <option value="content">내용</option>
+            <option value="author">작성자</option>
+          </select>
+          <input 
+            type="text" 
+            className="form-control me-2" 
+            placeholder="검색어를 입력하세요" 
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+          <button className="btn btn-outline-primary" type="submit">검색</button>
+        </form>
+      </div>
       
       {/* 에러 메시지 */}
       {error && (
