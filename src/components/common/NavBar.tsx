@@ -29,7 +29,7 @@ const NavBar: React.FC = () => {
 
   const toggleMobileMenu = () => setIsMobileMenuOpen(!isMobileMenuOpen);
 
-  // 네비게이션 링크 정의 - 이미지에 맞게 수정
+  // 네비게이션 링크 정의
   const navLinks = [
     { name: 'Home', href: '/' },
     { name: 'About', href: '/about' },
@@ -54,14 +54,14 @@ const NavBar: React.FC = () => {
     }`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center">
-          {/* 로고 - 이미지에 맞게 수정 */}
+          {/* 로고 클릭 시 홈으로 연결 */}
           <div className="flex-shrink-0">
             <Link to="/" className="flex items-center">
-              <span className="text-3xl font-bold text-purple-600">퍼즐핏</span>
+              <Logo className="h-10 w-auto" variant={isScrolled ? 'default' : 'white'} />
             </Link>
           </div>
 
-          {/* 데스크탑 메뉴 - 이미지에 맞게 수정 */}
+          {/* 데스크탑 메뉴 */}
           <div className="hidden md:flex md:items-center md:space-x-12">
             {navLinks.map((link) => 
               !link.children ? (
