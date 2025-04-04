@@ -1,70 +1,99 @@
 import React from 'react';
+import { useTheme } from '../../contexts/ThemeContext';
 
-type ButtonVariant = 'primary' | 'secondary' | 'outline' | 'text';
-type ButtonSize = 'sm' | 'md' | 'lg';
-
-interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: ButtonVariant;
-  size?: ButtonSize;
+export interface ButtonProps {
+  /** 버튼 내용 */
+  children: React.ReactNode;
+  /** 버튼 종류 */
+  variant?: 'primary' | 'secondary' | 'outline' | 'danger' | 'success';
+  /** 버튼 크기 */
+  size?: 'sm' | 'md' | 'lg';
+  /** 클릭 핸들러 */
+  onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  /** 비활성화 여부 */
+  disabled?: boolean;
+  /** 추가 클래스명 */
+  className?: string;
+  /** 버튼 타입 */
+  type?: 'button' | 'submit' | 'reset';
+  /** 전체 너비 사용 여부 */
   fullWidth?: boolean;
-  isLoading?: boolean;
+  /** 아이콘 (있는 경우) */
+  icon?: React.ReactNode;
+  /** 아이콘 위치 */
+  iconPosition?: 'left' | 'right';
+  /** aria-label (접근성) */
+  ariaLabel?: string;
 }
 
+/**
+ * 다양한 스타일과 크기를 지원하는 버튼 컴포넌트
+ */
 const Button: React.FC<ButtonProps> = ({
   children,
   variant = 'primary',
   size = 'md',
-  fullWidth = false,
-  isLoading = false,
+  onClick,
+  disabled = false,
   className = '',
-  disabled,
-  ...props
+  type = 'button',
+  fullWidth = false,
+  icon,
+  iconPosition = 'left',
+  ariaLabel,
 }) => {
-  const baseStyles = 'font-medium rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2';
+  const { mode } = useTheme();
+  const isDark = mode === 'dark';
+
+  // 기본 클래스
+  const baseClasses = 'font-medium rounded transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 inline-flex items-center justify-center';
   
-  const variantStyles = {
-    primary: 'bg-purple-600 text-white hover:bg-purple-700 focus:ring-purple-500',
-    secondary: 'bg-emerald-500 text-white hover:bg-emerald-600 focus:ring-emerald-500',
-    outline: 'border border-purple-600 text-purple-600 hover:bg-purple-50 focus:ring-purple-500',
-    text: 'text-purple-600 hover:bg-purple-50 focus:ring-purple-500',
+  // 변형에 따른 클래스
+  const variantClasses = {
+    primary: isDark 
+      ? 'bg-purple-500 hover:bg-purple-600 text-white focus:ring-purple-400'
+      : 'bg-purple-600 hover:bg-purple-700 text-white focus:ring-purple-500',
+    secondary: isDark
+      ? 'bg-gray-600 hover:bg-gray-700 text-white focus:ring-gray-500'
+      : 'bg-gray-200 hover:bg-gray-300 text-gray-800 focus:ring-gray-400',
+    outline: isDark
+      ? 'bg-transparent border border-purple-400 text-purple-400 hover:bg-purple-900 focus:ring-purple-400'
+      : 'bg-transparent border border-purple-600 text-purple-600 hover:bg-purple-50 focus:ring-purple-500',
+    danger: isDark
+      ? 'bg-red-500 hover:bg-red-600 text-white focus:ring-red-400'
+      : 'bg-red-600 hover:bg-red-700 text-white focus:ring-red-500',
+    success: isDark
+      ? 'bg-green-500 hover:bg-green-600 text-white focus:ring-green-400'
+      : 'bg-green-600 hover:bg-green-700 text-white focus:ring-green-500',
   };
   
-  const sizeStyles = {
-    sm: 'px-3 py-1.5 text-sm',
-    md: 'px-4 py-2 text-sm',
-    lg: 'px-6 py-3 text-base',
+  // 크기에 따른 클래스
+  const sizeClasses = {
+    sm: 'py-1 px-3 text-sm',
+    md: 'py-2 px-4 text-base',
+    lg: 'py-3 px-6 text-lg',
   };
   
-  const widthStyles = fullWidth ? 'w-full' : '';
+  // 너비 클래스
+  const widthClass = fullWidth ? 'w-full' : '';
   
-  const loadingStyles = isLoading ? 'opacity-70 cursor-not-allowed' : '';
+  // 비활성화 클래스
+  const disabledClass = disabled ? 'opacity-50 cursor-not-allowed' : '';
   
-  const combinedClassName = `
-    ${baseStyles}
-    ${variantStyles[variant]}
-    ${sizeStyles[size]}
-    ${widthStyles}
-    ${loadingStyles}
-    ${className}
-  `.trim();
+  // 최종 클래스 조합
+  const classes = `${baseClasses} ${variantClasses[variant]} ${sizeClasses[size]} ${widthClass} ${disabledClass} ${className}`;
   
   return (
     <button
-      className={combinedClassName}
-      disabled={disabled || isLoading}
-      {...props}
+      type={type}
+      className={classes}
+      onClick={onClick}
+      disabled={disabled}
+      aria-label={ariaLabel}
     >
-      {isLoading ? (
-        <span className="flex items-center justify-center">
-          <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-current" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-          </svg>
-          로딩 중...
-        </span>
-      ) : (
-        children
-      )}
+      {icon && iconPosition === 'left' && <span className="mr-2">{icon}</span>}
+      {children}
+      {icon && iconPosition === 'right' && <span className="ml-2">{icon}</span>}
     </button>
   );
 };

@@ -44,7 +44,7 @@ const LoginPage: React.FC = () => {
                       target.src = 'https://via.placeholder.com/100?text=혜택1';
                     }}
                   />
-                  <p className="text-sm font-medium">[공유사 해적단]<br />참가기회</p>
+                  <p className="text-sm font-medium">[추천인 제도]<br />참가기회</p>
                 </div>
                 
                 <div className="text-center">

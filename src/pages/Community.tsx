@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { PostList } from '../components/community/PostList.tsx';
-import { PostDetail } from '../components/community/PostDetail.tsx';
-import { PostForm } from '../components/community/PostForm.tsx';
-import { CategoryFilter } from '../components/community/CategoryFilter.tsx';
+import PostList from '../components/community/post/PostList';
+import PostDetail from '../components/community/post/PostDetail';
+import PostForm from '../components/community/post/PostForm';
+import CommunityLayout from '../components/community/common/CommunityLayout';
+import CategoryFilter from '../components/community/filter/CategoryFilter';
 import './Community.css';
 
 // 카테고리 정의

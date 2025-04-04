@@ -13,7 +13,7 @@ const CommunityLayout: React.FC<CommunityLayoutProps> = ({
   title = '커뮤니티' 
 }) => {
   return (
-    <div>
+    <>
       <div className="community-header">
         <div className="community-container">
           <h1 className="community-title">{title}</h1>
@@ -35,7 +35,7 @@ const CommunityLayout: React.FC<CommunityLayoutProps> = ({
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

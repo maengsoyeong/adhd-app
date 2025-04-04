@@ -6,6 +6,12 @@ export { default as NavBar } from './NavBar';
 export { default as Footer } from './Footer';
 export { default as ProgressBar } from './ProgressBar';
 
+// 타입 내보내기 (필요한 경우)
+export type { ButtonProps } from './Button';
+export type { CardProps } from './Card';
+export type { LogoProps } from './Logo';
+export type { ProgressBarProps } from './ProgressBar';
+
 // 나중에 추가될 컴포넌트들은 주석 처리
 // export { default as Input } from './Input';
 // export { default as Modal } from './Modal';
