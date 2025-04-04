@@ -1,11 +1,9 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import themeConfig from '../styles/theme';
 
-type ThemeMode = 'light' | 'dark';
-
-interface ThemeContextType {
-  mode: ThemeMode;
-  toggleTheme: () => void;
+export type ThemeContextType = {
+  mode: 'light' | 'dark';
+  toggleMode: () => void;
   colors: {
     primary: string;
     secondary: string;
@@ -15,7 +13,7 @@ interface ThemeContextType {
   };
   spacing: typeof themeConfig.spacing;
   borderRadius: typeof themeConfig.borderRadius;
-}
+};
 
 // theme.js의 설정을 가져와서 사용
 const { colors: themeColors, spacing, borderRadius } = themeConfig;
@@ -25,7 +23,7 @@ const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   // 사용자 시스템 설정에 따른 초기 테마 모드 설정
   const prefersDarkMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-  const [mode, setMode] = useState<ThemeMode>(prefersDarkMode ? 'dark' : 'light');
+  const [mode, setMode] = useState<ThemeContextType['mode']>(prefersDarkMode ? 'dark' : 'light');
   
   // 테마 모드 변경 시 HTML 클래스 업데이트
   useEffect(() => {
@@ -36,7 +34,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     }
   }, [mode]);
   
-  const toggleTheme = () => {
+  const toggleMode = () => {
     setMode(prevMode => prevMode === 'light' ? 'dark' : 'light');
   };
   
@@ -50,7 +48,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   };
   
   return (
-    <ThemeContext.Provider value={{ mode, toggleTheme, colors, spacing, borderRadius }}>
+    <ThemeContext.Provider value={{ mode, toggleMode, colors, spacing, borderRadius }}>
       {children}
     </ThemeContext.Provider>
   );
