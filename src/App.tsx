@@ -30,7 +30,6 @@ const App: React.FC = () => {
     <ThemeProvider>
       <Router>
         <Routes>
-          {/* MainLayout을 사용하는 라우트 */}
           <Route element={<MainLayout />}>
             {/* 메인 페이지 */}
             <Route path="/" element={<LandingPage />} />

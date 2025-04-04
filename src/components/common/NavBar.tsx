@@ -120,30 +120,37 @@ const MobileMenuItem = ({ link, isActive, isDark }) => {
   );
 };
 
-// 테마 토글 버튼 컴포넌트
-const ThemeToggle = ({ isDark, toggleMode }) => (
-  <button
-    onClick={toggleMode}
-    className={`p-2 rounded-full ${
-      isDark
-        ? 'bg-gray-800 text-yellow-300 hover:bg-gray-700'
-        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-    }`}
-    aria-label={isDark ? '라이트 모드로 전환' : '다크 모드로 전환'}
-  >
-    {isDark ? (
+// 테마 토글 버튼 컴포넌트 수정
+const ThemeToggle = () => {
+  const { mode, toggleMode } = useTheme();
+  const isDark = mode === 'dark';
+  
+  // 현재 테마 상태에 따른 아이콘 및 스타일 결정
+  let buttonClass = '';
+  let buttonLabel = '';
+  let icon = null;
+
+  if (isDark) {
+    // 다크 모드 (별빛 포함)
+    buttonClass = 'bg-indigo-700 text-white hover:bg-indigo-800';
+    buttonLabel = '라이트 모드로 전환';
+    icon = (
       <motion.svg 
-        initial={{ rotate: -30, opacity: 0 }}
-        animate={{ rotate: 0, opacity: 1 }}
+        whileHover={{ scale: 1.1 }}
         className="w-5 h-5" 
         fill="none" 
         stroke="currentColor" 
         viewBox="0 0 24 24" 
         xmlns="http://www.w3.org/2000/svg"
       >
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
       </motion.svg>
-    ) : (
+    );
+  } else {
+    // 라이트 모드
+    buttonClass = 'bg-gray-100 text-gray-700 hover:bg-gray-200';
+    buttonLabel = '다크 모드로 전환';
+    icon = (
       <motion.svg 
         initial={{ rotate: 30, opacity: 0 }}
         animate={{ rotate: 0, opacity: 1 }}
@@ -153,18 +160,27 @@ const ThemeToggle = ({ isDark, toggleMode }) => (
         viewBox="0 0 24 24" 
         xmlns="http://www.w3.org/2000/svg"
       >
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
       </motion.svg>
-    )}
-  </button>
-);
+    );
+  }
+
+  return (
+    <button
+      onClick={toggleMode}
+      className={`p-2 rounded-full ${buttonClass}`}
+      aria-label={buttonLabel}
+    >
+      {icon}
+    </button>
+  );
+};
 
 /**
  * 애플리케이션 네비게이션 바 컴포넌트
  */
 const NavBar: React.FC = () => {
-  // @ts-ignore - 임시로 타입 오류 무시 (ThemeContextType에 toggleMode 추가 필요)
-  const { mode, toggleMode } = useTheme();
+  const { mode } = useTheme();
   const isDark = mode === 'dark';
   const location = useLocation();
   const [isScrolled, setIsScrolled] = useState(false);
@@ -210,7 +226,7 @@ const NavBar: React.FC = () => {
     <header 
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isDark 
-          ? 'bg-gray-900' 
+          ? 'bg-gray-900 bg-opacity-80' 
           : 'bg-white'
       } ${
         isScrolled 
@@ -237,7 +253,7 @@ const NavBar: React.FC = () => {
             ))}
             
             {/* 테마 토글 버튼 */}
-            <ThemeToggle isDark={isDark} toggleMode={toggleMode} />
+            <ThemeToggle />
             
             {/* 로그인 버튼 */}
             <Link 
@@ -299,7 +315,7 @@ const NavBar: React.FC = () => {
               
               <div className={`pt-4 pb-3 border-t ${isDark ? 'border-gray-700' : 'border-gray-200'}`}>
                 <div className="flex items-center justify-between px-3">
-                  <ThemeToggle isDark={isDark} toggleMode={toggleMode} />
+                  <ThemeToggle />
                   <Link 
                     to="/login" 
                     className="px-4 py-2 rounded-full text-sm font-medium bg-purple-600 text-white hover:bg-purple-700 transition-colors"

@@ -27,13 +27,16 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   
   // 테마 모드 변경 시 HTML 클래스 업데이트
   useEffect(() => {
+    document.documentElement.classList.remove('light', 'dark', 'starry-night');
+    
     if (mode === 'dark') {
-      document.documentElement.classList.add('dark');
+      document.documentElement.classList.add('dark', 'starry-night');
     } else {
-      document.documentElement.classList.remove('dark');
+      document.documentElement.classList.add('light');
     }
   }, [mode]);
   
+  // 테마 모드 토글 함수 - 라이트 <-> 다크(별빛) 전환
   const toggleMode = () => {
     setMode(prevMode => prevMode === 'light' ? 'dark' : 'light');
   };
@@ -42,13 +45,19 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   const colors = {
     primary: mode === 'light' ? themeColors.primary[500] : themeColors.primary[400],
     secondary: mode === 'light' ? themeColors.secondary[500] : themeColors.secondary[400],
-    background: mode === 'light' ? '#ffffff' : '#1f2937',
+    background: mode === 'light' ? '#ffffff' : '#0f172a',
     text: mode === 'light' ? '#1f2937' : '#f9fafb',
     // 기타 색상...
   };
   
   return (
-    <ThemeContext.Provider value={{ mode, toggleMode, colors, spacing, borderRadius }}>
+    <ThemeContext.Provider value={{ 
+      mode, 
+      toggleMode, 
+      colors, 
+      spacing, 
+      borderRadius 
+    }}>
       {children}
     </ThemeContext.Provider>
   );

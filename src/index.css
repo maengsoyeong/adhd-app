@@ -99,3 +99,44 @@ button:focus-visible {
   transform: translateY(-1px);
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
+
+/* 밤하늘 모드 스타일 */
+.starry-night {
+  color-scheme: dark;
+}
+
+.starry-night body {
+  background: linear-gradient(to bottom, #0f172a, #1e1b4b, #312e81);
+  color: #f8fafc;
+  transition: background 0.5s ease;
+}
+
+/* 밤하늘 모드에서 텍스트 가독성 향상 */
+.starry-night h1, 
+.starry-night h2, 
+.starry-night h3, 
+.starry-night h4, 
+.starry-night h5, 
+.starry-night h6 {
+  color: #f8fafc;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+}
+
+.starry-night p, 
+.starry-night li, 
+.starry-night span {
+  color: #e2e8f0;
+}
+
+/* 밤하늘 모드에서 카드 및 컨테이너 스타일 */
+.starry-night .bg-white {
+  background-color: rgba(30, 41, 59, 0.7);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px); /* Safari 지원 */
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.starry-night .shadow-md,
+.starry-night .shadow-lg {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+}
