@@ -1,0 +1,259 @@
+/* 헤더 섹션 */
+.survey-header {
+  background-color: #8b5cf6; /* bg-purple-500 */
+  padding-top: 5rem;
+  padding-bottom: 5rem;
+  position: relative;
+}
+
+.survey-title {
+  font-size: 6rem;
+  font-weight: 700;
+  color: white;
+  text-align: right;
+  padding-right: 2rem;
+}
+
+@media (min-width: 768px) {
+  .survey-title {
+    font-size: 8rem;
+  }
+}
+
+/* 메인 콘텐츠 */
+.survey-content {
+  background-color: #f5f3ff; /* bg-purple-50 */
+  padding-top: 4rem;
+  padding-bottom: 4rem;
+  min-height: 80vh;
+}
+
+/* 결과 카드 */
+.result-card {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 1rem;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  max-width: 48rem;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 2rem;
+}
+
+/* 결과 헤더 */
+.result-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.result-title {
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: #1f2937; /* text-gray-800 */
+  margin-bottom: 1rem;
+}
+
+.result-subtitle {
+  font-size: 1.25rem;
+  color: #4b5563; /* text-gray-600 */
+}
+
+/* 점수 섹션 */
+.score-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding: 2rem;
+  background-color: #f5f3ff; /* bg-purple-50 */
+  border-radius: 1rem;
+}
+
+.score-label {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #8b5cf6; /* text-purple-500 */
+  margin-bottom: 0.5rem;
+}
+
+.score-value {
+  font-size: 3rem;
+  font-weight: 700;
+  color: #1f2937; /* text-gray-800 */
+}
+
+.score-range {
+  font-size: 0.875rem;
+  color: #6b7280; /* text-gray-500 */
+  margin-top: 0.5rem;
+}
+
+/* 결과 해석 */
+.interpretation {
+  margin-bottom: 2rem;
+}
+
+.interpretation-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #1f2937; /* text-gray-800 */
+  margin-bottom: 1rem;
+}
+
+.interpretation-text {
+  color: #4b5563; /* text-gray-600 */
+  line-height: 1.5;
+  margin-bottom: 1rem;
+}
+
+/* 권장 사항 */
+.recommendations {
+  margin-bottom: 2rem;
+}
+
+.recommendations-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #1f2937; /* text-gray-800 */
+  margin-bottom: 1rem;
+}
+
+.recommendation-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.recommendation-item {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+  padding: 1rem;
+  background-color: #f9fafb; /* bg-gray-50 */
+  border-radius: 0.5rem;
+  border-left: 4px solid #8b5cf6; /* border-l-4 border-purple-500 */
+}
+
+.recommendation-icon {
+  margin-right: 1rem;
+  color: #8b5cf6; /* text-purple-500 */
+  flex-shrink: 0;
+}
+
+.recommendation-text {
+  color: #4b5563; /* text-gray-600 */
+  line-height: 1.5;
+}
+
+/* 차트 섹션 */
+.chart-section {
+  margin-bottom: 2rem;
+}
+
+.chart-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #1f2937; /* text-gray-800 */
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.chart-container {
+  height: 300px;
+  margin-bottom: 1rem;
+}
+
+.chart-legend {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+}
+
+.legend-color {
+  width: 1rem;
+  height: 1rem;
+  border-radius: 9999px;
+  margin-right: 0.5rem;
+}
+
+.legend-label {
+  font-size: 0.875rem;
+  color: #4b5563; /* text-gray-600 */
+}
+
+/* 버튼 */
+.btn {
+  display: inline-block;
+  padding: 0.75rem 1.5rem;
+  font-weight: 500;
+  text-align: center;
+  border-radius: 0.375rem;
+  transition: all 0.3s ease;
+}
+
+.btn-primary {
+  background-color: #8b5cf6; /* bg-purple-500 */
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: #7c3aed; /* bg-purple-600 */
+}
+
+.btn-outline {
+  background-color: transparent;
+  border: 1px solid #8b5cf6; /* border-purple-500 */
+  color: #8b5cf6; /* text-purple-500 */
+}
+
+.btn-outline:hover {
+  background-color: #8b5cf6; /* bg-purple-500 */
+  color: white;
+}
+
+.result-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+/* 컨테이너 */
+.container {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+@media (min-width: 640px) {
+  .container {
+    max-width: 640px;
+  }
+}
+
+@media (min-width: 768px) {
+  .container {
+    max-width: 768px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .container {
+    max-width: 1024px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .container {
+    max-width: 1280px;
+  }
+} 
