@@ -30,3 +30,9 @@ dist-ssr
 .env.test.local
 .env.production.local
 server/.env
+
+# 설정 파일
+firebaseConfig.js
+config.json
+**/firebaseConfig.js
+**/config.json
