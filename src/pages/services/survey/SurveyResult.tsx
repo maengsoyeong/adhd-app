@@ -12,9 +12,9 @@ import {
   ChartOptions
 } from 'chart.js';
 import { Radar } from 'react-chartjs-2';
-import { PDFDownloadLink, Document, Page, Text, View } from '@react-pdf/renderer';
-import { questions, Question } from './SurveyTest';
-import PDFDocument from '../components/PDFDocument';
+import { PDFDownloadLink } from '@react-pdf/renderer';
+import { questions } from './SurveyTest';
+import PDFDocument from '../../../components/shared/PDFDocument';
 
 ChartJS.register(
   RadialLinearScale,
@@ -71,25 +71,7 @@ const getLevelColorClass = (level: '정상' | '경계선' | '주의요망'): str
   }
 };
 
-// PDF 문서 컴포넌트
-const MyDocument = ({ answers }: { answers: { [key: number]: string } }) => (
-  <Document>
-    <Page size="A4" style={{ padding: 20 }}>
-      <Text style={{ fontSize: 20, marginBottom: 20 }}>테스트 결과</Text>
-      {questions.map((question, index) => {
-        const answer = answers[question.id] || '미답변';
-        return (
-          <View key={question.id} style={{ marginBottom: 10 }}>
-            <Text>{index + 1}. {question.text}</Text>
-            <Text>답변: {answer}</Text>
-          </View>
-        );
-      })}
-    </Page>
-  </Document>
-);
-
-export const SurveyResult: React.FC = () => {
+const SurveyResult: React.FC = () => {
   const location = useLocation();
   const answers = (location.state as LocationState)?.answers || {};
   const chartRef = useRef<any>(null);
@@ -294,4 +276,6 @@ export const SurveyResult: React.FC = () => {
       </div>
     </div>
   );
-}; 
+};
+
+export default SurveyResult;

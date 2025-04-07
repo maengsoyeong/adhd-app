@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const SelfCheckPage: React.FC = () => {
   return (
@@ -13,17 +14,17 @@ const SelfCheckPage: React.FC = () => {
         </div>
         
         <div className="space-y-4">
-          <a 
-            href="/survey/intro"
+          <Link 
+            to="/survey/intro"
             className="block w-full p-4 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
           >
             <h3 className="text-lg font-medium">ADHD 종합 설문조사</h3>
             <p className="text-gray-600">ADHD의 여러 측면을 종합적으로 평가하는 설문입니다.</p>
-          </a>
+          </Link>
         </div>
       </div>
     </div>
   );
 };
 
-export default SelfCheckPage; 
+export default SelfCheckPage;

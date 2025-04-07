@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ProgressBar } from '../components/ProgressBar';
+import { ProgressBar } from '../../../components/ui/ProgressBar';
 
 export interface Question {
   id: number;
@@ -67,7 +67,7 @@ export const questions: Question[] = [
   }
 ];
 
-export const SurveyTest: React.FC = () => {
+const SurveyTest: React.FC = () => {
   const [answers, setAnswers] = useState<{[key: number]: string}>({});
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const navigate = useNavigate();
@@ -110,7 +110,7 @@ export const SurveyTest: React.FC = () => {
     const unansweredQuestions = getUnansweredQuestions();
     
     if (unansweredQuestions.length === 0) {
-      navigate('/result', { state: { answers } });
+      navigate('/survey/result', { state: { answers } });
     } else {
       // 첫 번째 미답변 문항으로 이동
       const firstUnanswered = unansweredQuestions[0];
@@ -125,7 +125,7 @@ export const SurveyTest: React.FC = () => {
 
   return (
     <>
-      <ProgressBar current={answeredCount} total={questions.length} />
+      <ProgressBar currentStep={answeredCount} totalSteps={questions.length} />
       <div className="flex justify-center p-4 mt-16">
         {/* 문항과 답변을 포함하는 메인 카드 - 고정 너비 적용 */}
         <div className="w-[640px] bg-white rounded-xl shadow-lg p-8 h-[480px] flex flex-col">
@@ -223,4 +223,6 @@ export const SurveyTest: React.FC = () => {
       </div>
     </>
   );
-}; 
+};
+
+export default SurveyTest;

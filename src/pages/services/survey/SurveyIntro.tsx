@@ -27,7 +27,7 @@ export const SurveyIntro: React.FC = () => {
     const newTotal = totalTests + 1;
     setTotalTests(newTotal);
     localStorage.setItem('totalTests', newTotal.toString());
-    navigate('/test');
+    navigate('/survey/test');
   };
 
   return (
@@ -145,4 +145,6 @@ export const SurveyIntro: React.FC = () => {
       </div>
     </div>
   );
-}; 
+};
+
+export default SurveyIntro;
