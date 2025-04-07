@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import ProgressBar from '../../../components/ProgressBar';
+import ProgressBar from '../../../components/ui/ProgressBar';
 
 export interface Question {
   id: number;
@@ -67,9 +67,10 @@ export const questions: Question[] = [
   }
 ];
 
-const SurveyTest: React.FC = () => {
+const ADHDtestMain: React.FC = () => {
   const [answers, setAnswers] = useState<{[key: number]: string}>({});
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [showUnansweredModal, setShowUnansweredModal] = useState(false);
   const navigate = useNavigate();
 
   const currentQuestion = questions[currentQuestionIndex];
@@ -99,28 +100,81 @@ const SurveyTest: React.FC = () => {
     }
   };
 
-  // 답변하지 않은 문항들을 찾는 함수 수정
+  // 답변하지 않은 문항들을 찾는 함수
   const getUnansweredQuestions = () => {
     return questions
-      .filter(q => answers[q.id] === undefined)  // 수정된 부분
-      .map(q => q.id);
+      .filter(q => !answers[q.id])
+      .map(q => ({
+        id: q.id,
+        index: questions.findIndex(question => question.id === q.id)
+      }));
   };
 
   const handleSubmit = () => {
     const unansweredQuestions = getUnansweredQuestions();
     
     if (unansweredQuestions.length === 0) {
-      navigate('/survey/result', { state: { answers } });
+      navigate('/adhd-test/result', { state: { answers } });
     } else {
-      // 첫 번째 미답변 문항으로 이동
-      const firstUnanswered = unansweredQuestions[0];
-      const questionIndex = questions.findIndex(q => q.id === firstUnanswered);
-      setCurrentQuestionIndex(questionIndex);
-      
-      // 알림 메시지 표시
-      const missingQuestions = unansweredQuestions.join(', ');
-      alert(`다음 문항들이 답변되지 않았습니다: ${missingQuestions}번`);
+      setShowUnansweredModal(true);
     }
+  };
+
+  // 미답변 문항으로 이동하는 함수
+  const goToUnansweredQuestion = (index: number) => {
+    setCurrentQuestionIndex(index);
+    setShowUnansweredModal(false);
+  };
+
+  // 미답변 문항 모달
+  const UnansweredModal = () => {
+    const unansweredQuestions = getUnansweredQuestions();
+
+    return (
+      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div className="bg-white rounded-xl shadow-2xl p-6 max-w-md w-full mx-4 transform transition-all">
+          <div className="flex justify-between items-center mb-4">
+            <h3 className="text-xl font-semibold text-purple-800">
+              답변하지 않은 문항
+            </h3>
+            <button 
+              onClick={() => setShowUnansweredModal(false)}
+              className="text-gray-400 hover:text-gray-600 transition-colors"
+              title="모달 닫기"
+              aria-label="모달 닫기"
+            >
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+          
+          <div className="space-y-3 max-h-60 overflow-y-auto">
+            {unansweredQuestions.map(({ id, index }) => (
+              <button
+                key={id}
+                onClick={() => goToUnansweredQuestion(index)}
+                className="w-full text-left p-3 rounded-lg bg-purple-50 hover:bg-purple-100 
+                         transition-colors flex items-center justify-between group"
+              >
+                <span className="text-purple-700">
+                  {id}번 문항: {questions[index].text}
+                </span>
+                <span className="text-purple-400 group-hover:text-purple-600 transition-colors">
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
+                  </svg>
+                </span>
+              </button>
+            ))}
+          </div>
+
+          <div className="mt-6 text-center text-sm text-gray-500">
+            모든 문항에 답변해주세요
+          </div>
+        </div>
+      </div>
+    );
   };
 
   return (
@@ -201,9 +255,9 @@ const SurveyTest: React.FC = () => {
                   className={`
                     px-8 py-2 rounded-lg font-semibold
                     transform transition-all duration-200
-                    ${Object.keys(answers).length === questions.length
+                    ${answeredCount === questions.length
                       ? 'bg-gradient-to-r from-purple-600 to-purple-800 text-white hover:scale-105 hover:shadow-lg'
-                      : 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                      : 'bg-purple-100 text-purple-400 hover:bg-purple-200'
                     }
                   `}
                 >
@@ -211,7 +265,7 @@ const SurveyTest: React.FC = () => {
                 </button>
               ) : (
                 <button
-                  onClick={handleNext}
+                  onClick={() => setCurrentQuestionIndex(prev => prev + 1)}
                   className="px-6 py-2 rounded-lg bg-purple-600 text-white hover:bg-purple-700"
                 >
                   다음
@@ -221,8 +275,11 @@ const SurveyTest: React.FC = () => {
           </div>
         </div>
       </div>
+
+      {/* 미답변 문항 모달 */}
+      {showUnansweredModal && <UnansweredModal />}
     </>
   );
 };
 
-export default SurveyTest;
+export default ADHDtestMain;

@@ -6,9 +6,9 @@ import Layout from './components/layout/Layout';
 import LandingPage from './pages/home/LandingPage';
 import AboutPage from './pages/about/AboutPage';
 import ServicesPage from './pages/services/ServicesPage';
-import SurveyIntro from './pages/services/survey/SurveyIntro';
-import SurveyTest from './pages/services/survey/SurveyTest';
-import SurveyResult from './pages/services/survey/SurveyResult';
+import ADHDtestIntro from './pages/services/ADHDtest/ADHDtestIntro';
+import ADHDtestMain from './pages/services/ADHDtest/ADHDtestMain';
+import ADHDtestResult from './pages/services/ADHDtest/ADHDtestResult';
 import SelfCheckPage from './pages/services/self-check/SelfCheckPage';
 import InformationPage from './pages/information/InformationPage';
 import CommunityPage from './pages/community/CommunityPage';
@@ -22,10 +22,10 @@ function App() {
           <Route index element={<LandingPage />} />
           <Route path="about" element={<AboutPage />} />
           <Route path="services" element={<ServicesPage />} />
-          <Route path="survey">
-            <Route path="intro" element={<SurveyIntro />} />
-            <Route path="test" element={<SurveyTest />} />
-            <Route path="result" element={<SurveyResult />} />
+          <Route path="adhd-test">
+            <Route path="intro" element={<ADHDtestIntro />} />
+            <Route path="test" element={<ADHDtestMain />} />
+            <Route path="result" element={<ADHDtestResult />} />
           </Route>
           <Route path="self-check" element={<SelfCheckPage />} />
           <Route path="information" element={<InformationPage />} />

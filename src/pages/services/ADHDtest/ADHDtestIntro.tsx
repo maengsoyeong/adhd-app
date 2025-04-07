@@ -7,7 +7,7 @@ interface UserInfo {
   interests: string[];
 }
 
-export const SurveyIntro: React.FC = () => {
+export const ADHDtestIntro: React.FC = () => {
   const navigate = useNavigate();
   const [userInfo, setUserInfo] = useState<UserInfo>({
     ageGroup: '',
@@ -23,11 +23,10 @@ export const SurveyIntro: React.FC = () => {
   }, []);
 
   const handleStart = () => {
-    // 검사 시작 시 카운트 증가
     const newTotal = totalTests + 1;
     setTotalTests(newTotal);
     localStorage.setItem('totalTests', newTotal.toString());
-    navigate('/survey/test');
+    navigate('/adhd-test/test');
   };
 
   return (
@@ -147,4 +146,4 @@ export const SurveyIntro: React.FC = () => {
   );
 };
 
-export default SurveyIntro;
+export default ADHDtestIntro;

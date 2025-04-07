@@ -8,10 +8,10 @@ const ServicesPage: React.FC = () => {
       
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         <Link 
-          to="/survey/intro"
+          to="/adhd-test/intro"
           className="block bg-white p-6 rounded-lg shadow-md border-l-4 border-purple-500 hover:shadow-lg transition-shadow"
         >
-          <h2 className="text-xl font-semibold mb-4 text-purple-700">ADHD 설문조사</h2>
+          <h2 className="text-xl font-semibold mb-4 text-purple-700">ADHD 자가진단</h2>
           <p className="text-gray-700 mb-4">
             과학적으로 검증된 문항을 통해 ADHD 성향을 종합적으로 평가합니다.
             결과에 따른 맞춤형 조언을 받아보세요.
@@ -27,7 +27,7 @@ const ServicesPage: React.FC = () => {
         </Link>
         
         <Link 
-          to="/self-check"
+          to="/adhd-test/intro"
           className="block bg-white p-6 rounded-lg shadow-md border-l-4 border-purple-500 hover:shadow-lg transition-shadow"
         >
           <h2 className="text-xl font-semibold mb-4 text-purple-700">ADHD 자가진단</h2>

@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import {
   Chart as ChartJS,
   RadialLinearScale,
@@ -13,7 +13,7 @@ import {
 } from 'chart.js';
 import { Radar } from 'react-chartjs-2';
 import { PDFDownloadLink } from '@react-pdf/renderer';
-import { questions } from './SurveyTest';
+import { questions } from './ADHDtestMain';
 import PDFDocument from '../../../components/shared/PDFDocument';
 
 ChartJS.register(
@@ -71,8 +71,9 @@ const getLevelColorClass = (level: '정상' | '경계선' | '주의요망'): str
   }
 };
 
-const SurveyResult: React.FC = () => {
+const ADHDtestResult: React.FC = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const answers = (location.state as LocationState)?.answers || {};
   const chartRef = useRef<any>(null);
 
@@ -184,6 +185,10 @@ const SurveyResult: React.FC = () => {
     return '';
   };
 
+  const handleRetake = () => {
+    navigate('/adhd-test/intro');
+  };
+
   return (
     <div className="max-w-4xl mx-auto p-6">
       <h1 className="text-3xl font-bold text-center mb-8 text-purple-700">테스트 결과</h1>
@@ -274,8 +279,17 @@ const SurveyResult: React.FC = () => {
           )}
         </p>
       </div>
+
+      <div className="text-center mt-8">
+        <button
+          onClick={handleRetake}
+          className="px-6 py-2 bg-purple-100 text-purple-600 rounded-lg hover:bg-purple-200"
+        >
+          테스트 다시하기
+        </button>
+      </div>
     </div>
   );
 };
 
-export default SurveyResult;
+export default ADHDtestResult;

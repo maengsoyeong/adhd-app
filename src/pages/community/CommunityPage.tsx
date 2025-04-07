@@ -42,27 +42,24 @@ const CommunityPage: React.FC = () => {
       z-index: 9999;
       transform: rotate(-30deg);
       transition: transform 0.1s ease-out;
-      display: none;  // 초기에는 숨김
+      display: none;
     `;
     document.body.appendChild(cursorEl);
 
-    // 커뮤니티 페이지 컨텐츠 영역 선택
-    const contentArea = document.querySelector('.community-content');
+    // HTMLElement로 타입 지정
+    const contentArea = document.querySelector('.community-content') as HTMLElement;
     
     const moveCursor = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
-      // 커뮤니티 컨텐츠 영역 내부인지 확인
       if (contentArea?.contains(target)) {
         cursorEl.style.display = 'block';
         cursorEl.style.left = `${e.clientX - 16}px`;
         cursorEl.style.top = `${e.clientY - 16}px`;
         const rotation = (Math.sin(Date.now() / 500) * 15) - 30;
         cursorEl.style.transform = `rotate(${rotation}deg)`;
-        // 컨텐츠 영역 내부에서만 기본 커서 숨김
         contentArea.style.cursor = 'none';
       } else {
         cursorEl.style.display = 'none';
-        // 컨텐츠 영역 외부에서는 기본 커서 표시
         if (contentArea) contentArea.style.cursor = 'auto';
       }
     };

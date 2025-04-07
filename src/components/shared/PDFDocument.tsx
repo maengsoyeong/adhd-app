@@ -1,6 +1,7 @@
 import React from 'react';
 import { Document, Page, Text, View, StyleSheet, Image } from '@react-pdf/renderer';
-import { Question } from '../../pages/services/survey/SurveyTest';
+import { Question } from '../../pages/services/ADHDtest/ADHDtestMain';
+import { questions } from '../../pages/services/ADHDtest/ADHDtestMain';
 
 interface CategoryScore {
   attention: number;

@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const LandingPage: React.FC = () => {
   return (
@@ -22,12 +23,12 @@ const LandingPage: React.FC = () => {
           </p>
           
           <div className="mt-12">
-            <a 
-              href="/survey/intro" 
+            <Link
+              to="/adhd-test/intro"
               className="px-10 py-4 bg-purple-600 text-white font-medium rounded-full text-lg shadow-lg hover:bg-purple-700 hover:shadow-xl transition-all duration-300"
             >
               지금 바로 시작하기
-            </a>
+            </Link>
           </div>
         </div>
         
