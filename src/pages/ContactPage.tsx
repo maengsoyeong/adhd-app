@@ -1,44 +1,29 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 const ContactPage: React.FC = () => {
+  useEffect(() => {
+    // 페이지가 로드되면 FormSubmit 링크로 리디렉션
+    window.location.href = 'https://formsubmit.co/el/yefici';
+  }, []);
+
+  // 리디렉션 전 잠시 표시될 로딩 UI
   return (
-    <div className="max-w-2xl mx-auto">
-      <h1 className="text-3xl font-bold mb-6">연락하기</h1>
-      <form className="space-y-4">
-        <div>
-          <label htmlFor="name" className="block mb-1">이름</label>
-          <input 
-            type="text" 
-            id="name" 
-            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500" 
-            placeholder="이름을 입력하세요"
-          />
-        </div>
-        <div>
-          <label htmlFor="email" className="block mb-1">이메일</label>
-          <input 
-            type="email" 
-            id="email" 
-            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500" 
-            placeholder="이메일을 입력하세요"
-          />
-        </div>
-        <div>
-          <label htmlFor="message" className="block mb-1">메시지</label>
-          <textarea 
-            id="message" 
-            rows={5} 
-            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500" 
-            placeholder="메시지를 입력하세요"
-          ></textarea>
-        </div>
-        <button 
-          type="submit" 
-          className="bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-lg transition-colors"
-        >
-          전송하기
-        </button>
-      </form>
+    <div className="flex flex-col items-center justify-center min-h-[50vh]">
+      <h1 className="text-2xl font-bold mb-4">문의하기 페이지로 이동 중...</h1>
+      <p className="text-gray-600">
+        잠시만 기다려주세요. 자동으로 문의 양식으로 이동합니다.
+      </p>
+      <div className="mt-6">
+        <p>
+          자동으로 이동하지 않는 경우 
+          <a 
+            href="https://formsubmit.co/el/yefici" 
+            className="text-purple-600 font-medium ml-1"
+          >
+            여기를 클릭하세요.
+          </a>
+        </p>
+      </div>
     </div>
   );
 };
