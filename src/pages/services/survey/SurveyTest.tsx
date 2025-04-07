@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ProgressBar } from '../../../components/ui/ProgressBar';
+import ProgressBar from '../../../components/ProgressBar';
 
 export interface Question {
   id: number;

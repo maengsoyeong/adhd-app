@@ -1,28 +1,37 @@
 import React from 'react';
 
 interface ProgressBarProps {
-  current: number;
-  total: number;
+  currentStep: number;
+  totalSteps: number;
 }
 
-export const ProgressBar: React.FC<ProgressBarProps> = ({ current, total }) => {
-  const progress = (current / total) * 100;
-  
-  // progress 값에 따른 너비 클래스를 동적으로 결정
-  const getWidthClass = (percentage: number): string => {
-    return `w-[${Math.round(percentage)}%]`;
-  };
+const ProgressBar: React.FC<ProgressBarProps> = ({ currentStep, totalSteps }) => {
+  const progress = Math.min((currentStep / totalSteps) * 100, 100);
 
   return (
-    <div className="fixed top-0 left-0 w-full z-50">
-      <div className="h-2 bg-gray-200">
-        <div 
-          className={`h-full bg-purple-600 transition-all duration-300 ${getWidthClass(progress)}`}
-        />
-      </div>
-      <div className="text-center text-sm text-purple-600 mt-1">
-        {current} / {total} 문항
+    <div className="fixed top-0 left-0 w-full z-50 bg-white/70 backdrop-blur-md shadow-sm">
+      <div className="max-w-3xl mx-auto px-4 py-2">
+        {/* 라벨과 퍼센트 표시 */}
+        <div className="flex justify-between items-center mb-1 text-sm font-medium text-gray-700">
+          <span>진행 중</span>
+          <span>{currentStep} / {totalSteps} 문항</span>
+        </div>
+
+        {/* 프로그래스 바 */}
+        <div className="w-full bg-gray-200 rounded-full h-3 shadow-inner">
+          <div
+            className="bg-gradient-to-r from-purple-500 to-indigo-500 h-full rounded-full transition-all duration-500 ease-in-out"
+            style={{ width: `${progress}%` }}
+          />
+        </div>
+
+        {/* 퍼센트 텍스트 */}
+        <div className="text-right text-xs text-gray-500 mt-1">
+          {Math.floor(progress)}%
+        </div>
       </div>
     </div>
   );
 };
+
+export default ProgressBar;
