@@ -7,7 +7,7 @@ export default {
   theme: {
     extend: {
       animation: {
-        'float': 'float 6s ease-in-out infinite',
+        'float': 'float 3s ease-in-out infinite',
         'float-slow': 'float 8s ease-in-out infinite',
         'float-medium': 'float 7s ease-in-out infinite',
         'twinkle': 'twinkle 3s ease-in-out infinite',
@@ -16,7 +16,7 @@ export default {
       keyframes: {
         float: {
           '0%, 100%': { transform: 'translateY(0)' },
-          '50%': { transform: 'translateY(-20px)' },
+          '50%': { transform: 'translateY(-10px)' }
         },
         twinkle: {
           '0%, 100%': { opacity: '0.3' },

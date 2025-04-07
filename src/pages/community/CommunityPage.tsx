@@ -105,7 +105,7 @@ const CommunityPage: React.FC = () => {
   }, []);
 
   return (
-    <div className="relative min-h-[80vh] overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-b from-purple-900 via-purple-800 to-purple-900 relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a2a] via-[#1a1a4a] to-[#2a1a6a] z-0">
         {stars.map(star => (
           <div
@@ -139,22 +139,23 @@ const CommunityPage: React.FC = () => {
         ))}
       </div>
 
-      <div className="relative z-10 max-w-5xl mx-auto px-4 py-16">
-        <h1 className="text-4xl font-bold mb-6 text-white text-center">
-          <span className="inline-block animate-pulse">✨</span> 
-          커뮤니티
-          <span className="inline-block animate-pulse">✨</span>
-        </h1>
-
-        <div className="bg-white bg-opacity-10 backdrop-blur-md p-8 rounded-lg shadow-lg border border-purple-300 border-opacity-30 mb-8 text-white">
-          <p className="text-lg">
-            이곳은 성인 ADHD에 관심이 있는 사람들이 정보와 경험을 나누는 커뮤니티 공간입니다.
-            서로를 존중하고 지지하는 대화를 나누어 주세요.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 gap-4">
-          <div className="bg-white bg-opacity-10 backdrop-blur-md p-8 rounded-lg shadow-lg border border-purple-300 border-opacity-30 text-white">
+      <div className="relative z-10 pt-20 pb-16">
+        <div className="container mx-auto px-6">
+          <div className="text-center mb-12">
+            <img 
+              src="/logo.png" 
+              alt="퍼즐핏 로고" 
+              className="w-32 h-32 mx-auto mb-6 animate-float"
+            />
+            <h1 className="text-4xl font-bold text-white mb-4">
+              커뮤니티
+            </h1>
+            <p className="text-xl text-purple-200">
+              ADHD에 대한 경험과 정보를 공유하는 공간입니다.
+            </p>
+          </div>
+          
+          <div className="bg-white/10 backdrop-blur-md rounded-xl p-8 text-center max-w-2xl mx-auto">
             <h2 className="text-xl font-semibold mb-4 flex items-center">
               <span className="mr-2 text-yellow-300">★</span>
               ADHD 관련 커뮤니티 기능 준비 중

@@ -14,9 +14,11 @@ const Header: React.FC = () => {
       <nav className="container mx-auto px-4 py-4">
         <div className="flex justify-between items-center">
           <Link to="/" className="text-xl font-bold text-purple-700 flex items-center">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-            </svg>
+            <img 
+              src="/logo.png" 
+              alt="퍼즐핏 로고" 
+              className="h-8 w-auto mr-2"
+            />
             퍼즐핏
           </Link>
           <div className="flex gap-6">
