@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import FeaturesSection from './components/FeaturesSection';
+import CTASection from './components/CTASection';
 
 const LandingPage: React.FC = () => {
   return (
@@ -35,31 +36,9 @@ const LandingPage: React.FC = () => {
         
         {/* FeaturesSection 컴포넌트 삽입 */}
         <FeaturesSection />
-
         
-        {/* 하단 CTA */}
-        <div className="max-w-3xl mx-auto text-center mb-16">
-          <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-6">
-            성인 ADHD, 제대로 알고 관리하세요
-          </h2>
-          <p className="text-lg text-gray-600 mb-8">
-            정확한 자가진단은 전문가 상담의 첫 걸음입니다. 지금 시작해보세요.
-          </p>
-          <div className="flex flex-col sm:flex-row justify-center gap-4">
-            <a 
-              href="/survey/intro" 
-              className="px-6 py-3 bg-purple-600 text-white font-medium rounded-lg hover:bg-purple-700 transition-colors"
-            >
-              테스트 시작하기
-            </a>
-            <a 
-              href="/self-check" 
-              className="px-6 py-3 bg-white text-purple-600 font-medium border border-purple-200 rounded-lg hover:border-purple-400 transition-colors"
-            >
-              자가진단 방법 알아보기
-            </a>
-          </div>
-        </div>
+        {/* CTASection으로 교체 */}
+        <CTASection />
       </div>
     </div>
   );
