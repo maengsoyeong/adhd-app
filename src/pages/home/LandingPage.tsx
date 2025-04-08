@@ -6,6 +6,7 @@ import ServiceSteps from './components/ServiceSteps';
 import FeaturesSection from './components/FeaturesSection';
 import CTASection from './components/CTASection';
 import WhyDifferentSection from './components/WhyDifferentSection';
+import PainPointSection from './components/PainPointSection';
 
 const LandingPage: React.FC = () => {
   return (
@@ -34,6 +35,7 @@ const LandingPage: React.FC = () => {
         <HeroSection />
         <ProblemAwareness />
         <WhyDifferentSection />
+        <PainPointSection />
         <ServiceSteps />
         <FeaturesSection />
         <CTASection />

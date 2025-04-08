@@ -196,7 +196,7 @@ const ProblemAwareness: React.FC = () => {
           <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
             성인 ADHD는 다양한 증상으로 나타나지만
             <br className="hidden md:block" />
-            많은 사람들이 자신이 그런지조차 모릅니다.
+            많은 이들이 그 원인을 모른 채 지칩니다.
             <br className="hidden md:block" />
             <span className={`${currentTheme.iconColor} font-medium transition-colors duration-500`}>퍼즐핏은 당신의 패턴을 정밀하게 분석해드립니다.</span>
           </p>
