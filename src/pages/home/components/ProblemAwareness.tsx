@@ -1,9 +1,20 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const ProblemAwareness: React.FC = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [autoPlay, setAutoPlay] = useState(true);
+
+  // 카드 색상 팔레트 정의 (각 페이지마다 다른 테마 색상)
+  const colorThemes = useMemo(() => [
+    { bg: 'from-indigo-50 to-purple-50', iconBg: 'bg-indigo-100', iconColor: 'text-indigo-600', border: 'border-indigo-200', indicator: 'bg-indigo-600' },
+    { bg: 'from-teal-50 to-emerald-50', iconBg: 'bg-teal-100', iconColor: 'text-teal-600', border: 'border-teal-200', indicator: 'bg-teal-600' },
+    { bg: 'from-amber-50 to-orange-50', iconBg: 'bg-amber-100', iconColor: 'text-amber-600', border: 'border-amber-200', indicator: 'bg-amber-600' },
+    { bg: 'from-rose-50 to-pink-50', iconBg: 'bg-rose-100', iconColor: 'text-rose-600', border: 'border-rose-200', indicator: 'bg-rose-600' }
+  ], []);
+
+  // 현재 활성화된 테마
+  const currentTheme = colorThemes[activeIndex % colorThemes.length];
 
   const issues = [
     {
@@ -127,7 +138,7 @@ const ProblemAwareness: React.FC = () => {
     if (autoPlay) {
       interval = setInterval(() => {
         setActiveIndex((prev) => (prev + 1) % totalPages);
-      }, 2000); // 2초마다 다음 페이지로
+      }, 3000); // 3초마다 다음 페이지로
     }
     
     return () => clearInterval(interval);
@@ -158,8 +169,19 @@ const ProblemAwareness: React.FC = () => {
     return result;
   };
 
+  // 카드 색상 획득 함수 (각 카드마다 조금씩 다른 색조)
+  const getCardStyle = (position: number) => {
+    // 베이스 색상에서 약간 변형된 색상 사용
+    const styles = [
+      { bg: 'bg-gradient-to-br from-white to-opacity-50', border: 'border-l-4' },
+      { bg: 'bg-gradient-to-tr from-white to-opacity-60', border: 'border-t-4' },
+      { bg: 'bg-gradient-to-bl from-white to-opacity-70', border: 'border-r-4' }
+    ];
+    return styles[position % styles.length];
+  };
+
   return (
-    <section className="py-20 bg-gradient-to-b from-white to-purple-50">
+    <section className={`py-20 bg-gradient-to-b from-white to-${currentTheme.bg} transition-colors duration-500`}>
       <div className="max-w-6xl mx-auto px-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -176,7 +198,7 @@ const ProblemAwareness: React.FC = () => {
             <br className="hidden md:block" />
             많은 사람들이 자신이 그런지조차 모릅니다.
             <br className="hidden md:block" />
-            <span className="text-purple-600 font-medium">퍼즐핏은 당신의 패턴을 정밀하게 분석해드립니다.</span>
+            <span className={`${currentTheme.iconColor} font-medium transition-colors duration-500`}>퍼즐핏은 당신의 패턴을 정밀하게 분석해드립니다.</span>
           </p>
         </motion.div>
 
@@ -185,19 +207,19 @@ const ProblemAwareness: React.FC = () => {
           <div className="flex justify-between items-center mb-4">
             <button 
               onClick={prevSlide}
-              className="z-10 p-2 rounded-full bg-purple-100 text-purple-600 hover:bg-purple-200 transition-colors"
+              className={`z-10 p-2 rounded-full ${currentTheme.iconBg} ${currentTheme.iconColor} hover:opacity-80 transition-all duration-300`}
               aria-label="이전 슬라이드"
             >
               <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                 <path fillRule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clipRule="evenodd" />
               </svg>
             </button>
-            <div className="text-gray-500 text-sm">
+            <div className={`text-sm ${currentTheme.iconColor} font-medium transition-colors duration-500`}>
               {activeIndex + 1} / {totalPages}
             </div>
             <button 
               onClick={nextSlide}
-              className="z-10 p-2 rounded-full bg-purple-100 text-purple-600 hover:bg-purple-200 transition-colors"
+              className={`z-10 p-2 rounded-full ${currentTheme.iconBg} ${currentTheme.iconColor} hover:opacity-80 transition-all duration-300`}
               aria-label="다음 슬라이드"
             >
               <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
@@ -214,12 +236,19 @@ const ProblemAwareness: React.FC = () => {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -50 }}
                 transition={{ duration: 0.5 }}
-                className="absolute inset-0 bg-white rounded-2xl p-8 shadow-md"
+                className={`absolute inset-0 bg-white border ${currentTheme.border} rounded-2xl p-8 shadow-lg backdrop-blur-sm bg-opacity-95 transition-colors duration-500`}
               >
                 <div className="flex flex-col items-center text-center h-full justify-center">
-                  <div className="w-20 h-20 bg-purple-100 rounded-full flex items-center justify-center text-purple-600 mb-6">
+                  <motion.div 
+                    className={`w-20 h-20 ${currentTheme.iconBg} rounded-full flex items-center justify-center ${currentTheme.iconColor} mb-6 transition-colors duration-500`}
+                    whileHover={{ 
+                      scale: 1.1,
+                      boxShadow: "0 0 0 8px rgba(168, 85, 247, 0.1)"
+                    }}
+                    transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                  >
                     {issues[activeIndex * 3].icon}
-                  </div>
+                  </motion.div>
                   <h3 className="text-xl font-semibold mb-3 text-gray-800">{issues[activeIndex * 3].title}</h3>
                   <p className="text-gray-600">{issues[activeIndex * 3].description}</p>
                 </div>
@@ -237,7 +266,9 @@ const ProblemAwareness: React.FC = () => {
                   setAutoPlay(false);
                   setTimeout(() => setAutoPlay(true), 10000);
                 }}
-                className={`w-2 h-2 rounded-full transition-colors ${index === activeIndex ? 'bg-purple-600' : 'bg-purple-200'}`}
+                className={`w-2 h-2 rounded-full transition-colors duration-300 ${
+                  index === activeIndex ? currentTheme.indicator : 'bg-gray-200'
+                }`}
                 aria-label={`페이지 ${index + 1}로 이동`}
               />
             ))}
@@ -249,19 +280,19 @@ const ProblemAwareness: React.FC = () => {
           <div className="flex justify-between items-center mb-4">
             <button 
               onClick={prevSlide}
-              className="z-10 p-2 rounded-full bg-purple-100 text-purple-600 hover:bg-purple-200 transition-colors"
+              className={`z-10 p-2 rounded-full ${currentTheme.iconBg} ${currentTheme.iconColor} hover:opacity-80 transition-all duration-300`}
               aria-label="이전 슬라이드"
             >
               <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
                 <path fillRule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clipRule="evenodd" />
               </svg>
             </button>
-            <div className="text-gray-500 text-sm">
+            <div className={`text-sm ${currentTheme.iconColor} font-medium transition-colors duration-500`}>
               {activeIndex + 1} / {totalPages} 페이지
             </div>
             <button 
               onClick={nextSlide}
-              className="z-10 p-2 rounded-full bg-purple-100 text-purple-600 hover:bg-purple-200 transition-colors"
+              className={`z-10 p-2 rounded-full ${currentTheme.iconBg} ${currentTheme.iconColor} hover:opacity-80 transition-all duration-300`}
               aria-label="다음 슬라이드"
             >
               <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
@@ -280,35 +311,38 @@ const ProblemAwareness: React.FC = () => {
                 transition={{ duration: 0.5 }}
                 className="grid grid-cols-3 gap-8"
               >
-                {getVisibleCardIndices().map((cardIndex, position) => (
-                  <motion.div
-                    key={`card-${cardIndex}`}
-                    custom={position}
-                    initial={{ opacity: 0, y: 50 }}
-                    animate={{ 
-                      opacity: 1, 
-                      y: 0,
-                      transition: { delay: position * 0.1 }
-                    }}
-                    whileHover={{ y: -5 }}
-                    className="bg-white rounded-2xl p-8 shadow-md hover:shadow-xl transition-all duration-300"
-                  >
-                    <div className="flex flex-col items-center text-center">
-                      <motion.div 
-                        className="w-20 h-20 bg-purple-100 rounded-full flex items-center justify-center text-purple-600 mb-6"
-                        whileHover={{ 
-                          scale: 1.1,
-                          boxShadow: "0 0 0 8px rgba(168, 85, 247, 0.1)"
-                        }}
-                        transition={{ type: "spring", stiffness: 400, damping: 10 }}
-                      >
-                        {issues[cardIndex].icon}
-                      </motion.div>
-                      <h3 className="text-xl font-semibold mb-3 text-gray-800">{issues[cardIndex].title}</h3>
-                      <p className="text-gray-600">{issues[cardIndex].description}</p>
-                    </div>
-                  </motion.div>
-                ))}
+                {getVisibleCardIndices().map((cardIndex, position) => {
+                  const cardStyle = getCardStyle(position);
+                  return (
+                    <motion.div
+                      key={`card-${cardIndex}`}
+                      custom={position}
+                      initial={{ opacity: 0, y: 50 }}
+                      animate={{ 
+                        opacity: 1, 
+                        y: 0,
+                        transition: { delay: position * 0.1 }
+                      }}
+                      whileHover={{ y: -5 }}
+                      className={`${cardStyle.bg} ${cardStyle.border} ${currentTheme.border} bg-white backdrop-blur-sm bg-opacity-95 rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300`}
+                    >
+                      <div className="flex flex-col items-center text-center">
+                        <motion.div 
+                          className={`w-20 h-20 ${currentTheme.iconBg} rounded-full flex items-center justify-center ${currentTheme.iconColor} mb-6 transition-colors duration-500`}
+                          whileHover={{ 
+                            scale: 1.1,
+                            boxShadow: `0 0 0 8px ${position === 0 ? 'rgba(79, 70, 229, 0.1)' : position === 1 ? 'rgba(20, 184, 166, 0.1)' : 'rgba(245, 158, 11, 0.1)'}`
+                          }}
+                          transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                        >
+                          {issues[cardIndex].icon}
+                        </motion.div>
+                        <h3 className="text-xl font-semibold mb-3 text-gray-800">{issues[cardIndex].title}</h3>
+                        <p className="text-gray-600">{issues[cardIndex].description}</p>
+                      </div>
+                    </motion.div>
+                  );
+                })}
               </motion.div>
             </AnimatePresence>
           </div>
@@ -323,8 +357,8 @@ const ProblemAwareness: React.FC = () => {
                   setAutoPlay(false);
                   setTimeout(() => setAutoPlay(true), 10000);
                 }}
-                className={`w-3 h-3 rounded-full transition-colors ${
-                  index === activeIndex ? 'bg-purple-600' : 'bg-purple-200'
+                className={`w-3 h-3 rounded-full transition-colors duration-300 ${
+                  index === activeIndex ? currentTheme.indicator : 'bg-gray-200'
                 }`}
                 aria-label={`페이지 ${index + 1}로 이동`}
               />
