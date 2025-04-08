@@ -23,7 +23,8 @@ const HeroSection: React.FC = () => {
           transition={{ duration: 0.8, delay: 0.2 }}
           className="text-xl text-gray-600 max-w-3xl mx-auto"
         >
-          15분 만에 어디에서나 검사가능! 성인 ADHD 가능성을 확인하고 전문가의 도움을 받아보세요.
+          15분 만에 어디에서나 검사가능!
+          성인 ADHD 가능성을 확인하고 전문가의 도움을 받아보세요.
         </motion.p>
         
         <motion.div

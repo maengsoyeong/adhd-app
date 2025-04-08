@@ -2,6 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import HeroSection from './components/HeroSection';
 import ProblemAwareness from './components/ProblemAwareness';
+import ServiceSteps from './components/ServiceSteps';
 import FeaturesSection from './components/FeaturesSection';
 import CTASection from './components/CTASection';
 
@@ -31,6 +32,7 @@ const LandingPage: React.FC = () => {
       <div className="relative z-10">
         <HeroSection />
         <ProblemAwareness />
+        <ServiceSteps />
         <FeaturesSection />
         <CTASection />
       </div>
