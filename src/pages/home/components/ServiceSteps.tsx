@@ -1,16 +1,32 @@
-import React from 'react';
-import { motion } from 'framer-motion';
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import clsx from 'clsx';
 
 const ServiceSteps: React.FC = () => {
+  // 모달 상태
+  const [selectedStep, setSelectedStep] = useState<number | null>(null);
+  
   // 서비스 단계 데이터
   const serviceSteps = [
     {
       id: 1,
       title: '자가진단 설문',
-      description: '성인 ADHD 맞춤 68문항 설문으로 당신의 증상을 확인하세요.',
-      icon: (
-        <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+      description: '전문가들이 설계한 68문항 설문으로\nADHD 성향과 특징을 점검해보세요.',
+      detailDescription: '성인 ADHD 자가진단은 국제적으로 검증된 척도를 기반으로 제작되었습니다. 약 15-20분 정도 소요되며, 일상생활에서 경험하는 주의력, 충동성, 과잉행동 등의 증상에 대한 질문으로 구성되어 있습니다. 모든 응답은 익명으로 처리되며, 완료 후 즉시 결과를 확인할 수 있습니다.',
+      buttonText: '더 알아보기 →',
+      illustration: (
+        <svg className="w-full h-full" viewBox="0 0 400 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="400" height="300" fill="#F5F3FF"/>
+          <circle cx="200" cy="150" r="100" fill="white" filter="url(#shadow)"/>
+          <path d="M150 130h100M150 150h80M150 170h90" stroke="#818CF8" strokeWidth="3" strokeLinecap="round"/>
+          <circle cx="130" cy="130" r="8" fill="#6366F1"/>
+          <circle cx="130" cy="150" r="8" fill="#818CF8"/>
+          <circle cx="130" cy="170" r="8" fill="#A5B4FC"/>
+          <defs>
+            <filter id="shadow" x="-20" y="-20" width="440" height="440" filterUnits="userSpaceOnUse">
+              <feDropShadow dx="0" dy="4" stdDeviation="8" floodOpacity="0.1"/>
+            </filter>
+          </defs>
         </svg>
       ),
       color: 'indigo'
@@ -18,32 +34,65 @@ const ServiceSteps: React.FC = () => {
     {
       id: 2,
       title: '맞춤 분석 결과 제공',
-      description: '데이터 기반의 상세한 분석 결과를 PDF로 제공해 드립니다.',
-      icon: (
-        <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+      description: '답변을 기반으로 주요 증상과\n일상 패턴을 분석해 드립니다.',
+      detailDescription: '퍼즐핏의 분석 알고리즘은 다양한 임상 데이터를 기반으로 개발되었습니다. 응답 결과를 종합적으로 분석하여 ADHD 성향 정도, 주요 증상 영역, 일상생활 패턴 등을 시각적 그래프와 함께 제공합니다. 결과는 PDF 형태로 다운로드할 수 있어 의료 전문가와의 상담 시 참고 자료로 활용할 수 있습니다.',
+      buttonText: '예시 리포트 보기 →',
+      illustration: (
+        <svg className="w-full h-full" viewBox="0 0 400 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="400" height="300" fill="#FAF5FF"/>
+          <circle cx="200" cy="150" r="100" fill="white" filter="url(#shadow)"/>
+          <path d="M140 180c20-40 40-60 60-60s40 20 60 60" stroke="#A855F7" strokeWidth="3" strokeLinecap="round"/>
+          <circle cx="200" cy="120" r="15" fill="#C084FC"/>
+          <path d="M160 200h80" stroke="#E9D5FF" strokeWidth="20" strokeLinecap="round"/>
+          <path d="M160 200h40" stroke="#A855F7" strokeWidth="20" strokeLinecap="round"/>
         </svg>
       ),
-      color: 'purple'
+      color: 'purple',
+      hasSampleReport: true
     },
     {
       id: 3,
       title: '나에게 맞는 전략 제안',
-      description: '당신의 패턴에 맞춘 관리 전략과 일상생활 팁을 받아보세요.',
-      icon: (
-        <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 10V3L4 14h7v7l9-11h-7z" />
+      description: '분석 결과에 따라 나에게 필요한\n일상 관리 전략을 제안해 드려요.',
+      detailDescription: '분석 결과를 바탕으로 개인 맞춤형 대처 전략을 제안합니다. 업무 효율성 향상, 시간 관리, 집중력 유지, 감정 조절 등 다양한 영역에서 실질적인 도움이 되는 방법을 알려드립니다. 모든 전략은 실제 성인 ADHD 관리에 효과적인 것으로 검증된 방법들로 구성되어 있습니다.',
+      buttonText: '전략 예시 보기 →',
+      illustration: (
+        <svg className="w-full h-full" viewBox="0 0 400 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="400" height="300" fill="#FDF4FF"/>
+          <circle cx="200" cy="150" r="100" fill="white" filter="url(#shadow)"/>
+          <path d="M160 150a40 40 0 1180 0" stroke="#DB2777" strokeWidth="3"/>
+          <path d="M160 150l20-20m20 20l20-20m20 20" stroke="#F472B6" strokeWidth="3" strokeLinecap="round"/>
+          <circle cx="200" cy="150" r="8" fill="#EC4899"/>
+          <path d="M180 180h40" stroke="#FBCFE8" strokeWidth="3" strokeLinecap="round"/>
         </svg>
       ),
-      color: 'fuchsia'
+      color: 'pink'
     },
     {
       id: 4,
       title: '성인 ADHD 전문가 연결',
-      description: '일반 심리상담이 아닌 성인 ADHD에게 맞는 전문적인 도움을 받을 수 있습니다.',
-      icon: (
-        <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+      description: '더 깊은 도움이 필요하다면,\n전문가와 연결해 드릴게요.',
+      detailDescription: '추가적인 도움이 필요한 경우, 성인 ADHD를 전문적으로 다루는 의료 및 상담 전문가 네트워크를 통해 적절한 지원을 받을 수 있도록 안내해 드립니다. 지역별 전문의 정보, 온라인 상담 서비스, 성인 ADHD 지원 그룹 등 다양한 리소스를 제공합니다.',
+      buttonText: '전문가 상담 안내 →',
+      illustration: (
+        <svg className="w-full h-full" viewBox="0 0 400 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="400" height="300" fill="#FFF1F2"/>
+          <circle cx="200" cy="150" r="100" fill="white" filter="url(#shadow)"/>
+          {/* Left person */}
+          <g transform="translate(140,120)">
+            <circle cx="0" cy="0" r="20" fill="#FDA4AF"/>
+            <circle cx="0" cy="-5" r="12" fill="#FDA4AF"/>
+            <path d="M-15 5 C-15 25, 15 25, 15 5" stroke="#E11D48" strokeWidth="3" fill="#FDA4AF"/>
+          </g>
+          {/* Right person */}
+          <g transform="translate(260,120)">
+            <circle cx="0" cy="0" r="20" fill="#FDA4AF"/>
+            <circle cx="0" cy="-5" r="12" fill="#FDA4AF"/>
+            <path d="M-15 5 C-15 25, 15 25, 15 5" stroke="#E11D48" strokeWidth="3" fill="#FDA4AF"/>
+          </g>
+          {/* Connection line with hearts */}
+          <path d="M170 120 C200 120, 200 100, 200 120 C200 140, 200 120, 230 120" stroke="#E11D48" strokeWidth="2" strokeDasharray="4 4"/>
+          <circle cx="200" cy="110" r="4" fill="#E11D48"/>
         </svg>
       ),
       color: 'rose'
@@ -126,15 +175,26 @@ const ServiceSteps: React.FC = () => {
     }
   };
 
+  // 색상 유틸리티 함수
+  const getColorClass = (colorName: string, type: 'bg' | 'text' | 'border', opacity?: string) => {
+    const baseClass = `${type}-${colorName}`;
+    return opacity ? `${baseClass}-${opacity}` : baseClass;
+  };
+
+  // 미리보기 이미지에 대한 fallback 처리
+  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+    e.currentTarget.src = 'https://via.placeholder.com/300x200?text=퍼즐핏+서비스';
+  };
+
   return (
-    <section className="py-20 relative overflow-hidden">
+    <section className="py-20 relative overflow-hidden bg-gradient-to-b from-white to-gray-50">
       {/* 배경 장식 */}
-      <div className="absolute inset-0 z-0 opacity-5">
-        <div className="absolute top-20 left-0 w-72 h-72 bg-indigo-300 rounded-full mix-blend-multiply filter blur-3xl"></div>
-        <div className="absolute bottom-20 right-10 w-72 h-72 bg-purple-300 rounded-full mix-blend-multiply filter blur-3xl"></div>
+      <div className="absolute inset-0 z-0">
+        <div className="absolute top-20 left-0 w-72 h-72 bg-indigo-100 rounded-full mix-blend-multiply filter blur-3xl opacity-70"></div>
+        <div className="absolute bottom-20 right-10 w-72 h-72 bg-purple-100 rounded-full mix-blend-multiply filter blur-3xl opacity-70"></div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 relative z-10">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* 섹션 제목 */}
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
@@ -143,12 +203,13 @@ const ServiceSteps: React.FC = () => {
           transition={{ duration: 0.8 }}
           className="text-center mb-16"
         >
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-6">
-            퍼즐핏은 당신에게 원스톱 솔루션을 제공합니다
+          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+            퍼즐핏과 함께<br className="sm:hidden"/>
+            <span className="text-indigo-600">ADHD 관리</span>를 시작하세요
           </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            과학적 방법론을 기반으로 한 검사부터 맞춤형 솔루션까지,<br className="hidden md:block"/> 
-            ADHD 관리를 위한 모든 과정을 지원합니다.
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+            전문가의 도움으로 설계된 맞춤형 솔루션으로<br className="hidden sm:block"/>
+            당신의 일상에 긍정적인 변화를 만들어보세요.
           </p>
         </motion.div>
 
@@ -233,7 +294,7 @@ const ServiceSteps: React.FC = () => {
           </div>
         </div>
 
-        {/* 4단계 서비스 카드 */}
+        {/* 서비스 카드 */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {serviceSteps.map((step, index) => (
             <motion.div
@@ -243,23 +304,119 @@ const ServiceSteps: React.FC = () => {
               viewport={{ once: true }}
               custom={index}
               variants={cardVariants}
-              whileHover={{ y: -10, transition: { duration: 0.3 } }}
-              className={`bg-white rounded-xl p-6 shadow-lg border-t-4 border-${step.color}-500 hover:shadow-xl transition-all duration-300`}
+              whileHover={{ 
+                y: -10,
+                transition: { duration: 0.3 }
+              }}
+              className={clsx(
+                "relative overflow-hidden rounded-2xl bg-white p-6",
+                "transform transition-all duration-300",
+                "hover:shadow-xl shadow-lg",
+                "flex flex-col"
+              )}
             >
-              <div className={`w-16 h-16 rounded-full bg-${step.color}-100 flex items-center justify-center text-${step.color}-600 mb-4`}>
-                {step.icon}
+              {/* 일러스트레이션 */}
+              <div className="mb-6 aspect-[4/3] w-full">
+                {step.illustration}
               </div>
-              <h4 className="text-xl font-semibold mb-2 flex items-center">
-                <span className={`w-8 h-8 rounded-full bg-${step.color}-500 text-white flex items-center justify-center text-sm font-bold mr-2`}>
-                  {step.id}
-                </span>
-                {step.title}
-              </h4>
-              <p className="text-gray-600">{step.description}</p>
+
+              {/* 컨텐츠 */}
+              <div className="flex-1 flex flex-col">
+                <h3 className={clsx(
+                  "text-xl font-bold mb-3",
+                  `text-${step.color}-600`
+                )}>
+                  {step.title}
+                </h3>
+                <p className="text-gray-600 mb-6 whitespace-pre-line leading-relaxed flex-1">
+                  {step.description}
+                </p>
+                
+                {/* 버튼 */}
+                <button
+                  className={clsx(
+                    "inline-flex items-center justify-between",
+                    "px-4 py-2 rounded-lg",
+                    "text-sm font-medium",
+                    "transform transition-all duration-200",
+                    `text-${step.color}-600 hover:text-${step.color}-700`,
+                    `bg-${step.color}-50 hover:bg-${step.color}-100`,
+                    "group"
+                  )}
+                  onClick={() => setSelectedStep(step.id)}
+                >
+                  {step.buttonText}
+                </button>
+              </div>
             </motion.div>
           ))}
         </div>
       </div>
+
+      {/* 모달 */}
+      <AnimatePresence>
+        {selectedStep !== null && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50 backdrop-blur-sm"
+            onClick={() => setSelectedStep(null)}
+          >
+            <motion.div
+              initial={{ y: 50, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: 50, opacity: 0 }}
+              transition={{ type: "spring", damping: 25 }}
+              className="bg-white rounded-2xl p-8 max-w-2xl w-full max-h-[80vh] overflow-y-auto"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {serviceSteps.filter(step => step.id === selectedStep).map(step => (
+                <div key={step.id} className="space-y-6">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-4">
+                      <div className={clsx(
+                        "w-16 h-16 rounded-xl flex items-center justify-center",
+                        `bg-${step.color}-50`
+                      )}>
+                        {step.illustration}
+                      </div>
+                      <h3 className="text-2xl font-bold text-gray-900">{step.title}</h3>
+                    </div>
+                    <button
+                      onClick={() => setSelectedStep(null)}
+                      className="p-2 rounded-full hover:bg-gray-100 transition-colors"
+                      aria-label="모달 닫기"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                    </button>
+                  </div>
+                  
+                  <div className="prose max-w-none">
+                    <p className="text-lg text-gray-700 leading-relaxed">{step.detailDescription}</p>
+                  </div>
+                  
+                  <div className="pt-6 border-t border-gray-100">
+                    <button
+                      className={clsx(
+                        "px-6 py-3 rounded-xl text-white font-medium",
+                        "transform transition-all duration-200",
+                        `bg-${step.color}-500 hover:bg-${step.color}-600`,
+                        "shadow-lg shadow-${step.color}-500/20",
+                        "flex items-center gap-2"
+                      )}
+                    >
+                      {step.buttonText}
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   );
 };
