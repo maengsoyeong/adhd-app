@@ -7,12 +7,12 @@ const FeaturesSection: React.FC = () => {
     {
       icon: IconVariants.Brain,
       title: "전문가 설계 테스트",
-      description: "정신건강 전문의와 함께 개발한 신뢰도 높은 ADHD 자가진단 테스트를 제공합니다."
+      description: "정신건강 전문가와 함께 개발한 성인 ADHD 맞춤형 자가진단 테스트를 제공합니다."
     },
     {
       icon: IconVariants.Lightning,
       title: "빠른 결과 분석",
-      description: "15분 만에 완료되는 테스트로 당신의 ADHD 성향을 즉시 분석해드립니다."
+      description: "15분 만에 완료되는 테스트로 당신의 ADHD 증상을 즉시 분석해드립니다."
     },
     {
       icon: IconVariants.Star,
