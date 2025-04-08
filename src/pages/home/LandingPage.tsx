@@ -5,6 +5,7 @@ import ProblemAwareness from './components/ProblemAwareness';
 import ServiceSteps from './components/ServiceSteps';
 import FeaturesSection from './components/FeaturesSection';
 import CTASection from './components/CTASection';
+import WhyDifferentSection from './components/WhyDifferentSection';
 
 const LandingPage: React.FC = () => {
   return (
@@ -32,6 +33,7 @@ const LandingPage: React.FC = () => {
       <div className="relative z-10">
         <HeroSection />
         <ProblemAwareness />
+        <WhyDifferentSection />
         <ServiceSteps />
         <FeaturesSection />
         <CTASection />
