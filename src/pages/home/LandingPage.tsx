@@ -33,9 +33,9 @@ const LandingPage: React.FC = () => {
       
       <div className="relative z-10">
         <HeroSection />
+        <PainPointSection />
         <ProblemAwareness />
         <WhyDifferentSection />
-        <PainPointSection />
         <ServiceSteps />
         <FeaturesSection />
         <CTASection />
